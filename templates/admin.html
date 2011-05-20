@@ -4,7 +4,9 @@
 
   <head>
   	<title>Admin</title>
-  	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+		{% block meta %}
+		{% endblock %}
 		<script src="https://www.google.com/jsapi?key=ABQIAAAApPeof0WyN6ORT7NeNop5OxQTfLwio8eQ7l5nn2epvDXvYfKfNxTgczQKHjATlT2Z11y3yDSfj-x87g" type="text/javascript"></script>
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.0/jquery.js"></script>
 		<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
@@ -23,7 +25,7 @@
 		{% block script %}
 		{% endblock %}
   </head> 
-  <body>
+  <body onload="initialize()">
   <div id="container">
     <div id="header">
 			<ul>

@@ -71,7 +71,11 @@ class InitAdmin(webapp.RequestHandler):
         elif method == "npcs": 
             r = seed.seedNPCs()
         elif method == "party": 
-            r = seed.seedPlayerParty()                                    
+            r = seed.seedPlayerParty()     
+        elif method == "ft_data": 
+            r = seed.seedFTData()           
+        elif method == "pins": 
+            r = seed.seedPins()                                            
         #else: r = API404
         #return self.response.out.write(simplejson.dumps(r))
         self.redirect('/admin/init')  
@@ -145,6 +149,7 @@ class Test(webapp.RequestHandler):
                 'user': user
             }        
             generate(self, 'test/test_start.html', template_values)
+            
         elif method == "quest":
             user = users.get_current_user()
             key = self.request.get('key')
@@ -164,7 +169,7 @@ class Test(webapp.RequestHandler):
             items = db.get(character.items)
             powers = db.get(character.powers)
             party = models.PlayerParty.all().filter('leader = ', character).get()
-            monster_party = models.NonPlayerParty.get_by_id(65)
+            monster_party = models.NonPlayerParty.get_by_id(125)
             monsters = db.get(monster_party.monsters)
             template_values = {
                 'party': party,
@@ -176,6 +181,18 @@ class Test(webapp.RequestHandler):
                 'user': user
             }        
             generate(self, 'test/test_attack.html', template_values)   
+        
+        elif method == "map": 
+            pins = models.BattlePin.all().fetch(100)
+            json = []
+            for p in pins:
+                lat, lon = utils.parseGeoPt(p.location)
+                data = {'name': p.name,'lat': lat,'lon': lon}
+                json.append(data)
+            template_values = {
+                'pins': simplejson.dumps(json)
+            }        
+            generate(self, 'test/test_map.html', template_values)
                      
 ######################## METHODS #############################################
 ##############################################################################

@@ -3,7 +3,7 @@
 # All rights reserved.
 # info@superkablamo.com
 #
-#
+# main.py serves the Morningstar home page.
 #
 # ============================================================================
 
@@ -29,9 +29,7 @@ from google.appengine.ext.webapp.util import run_wsgi_app
 ##############################################################################   
 class MainHandler(webapp.RequestHandler):
     def get(self):
-        template_values = {
-            'text': 'Hello World'
-        }
+        template_values = None
         generate(self, 'main.html', template_values)        
 
 ######################## METHODS #############################################

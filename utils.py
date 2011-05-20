@@ -42,6 +42,16 @@ def parseLocation(location):
     logging.info(_trace+'s[1] = '+str(s[1]))
     geo_loc = db.GeoPt(s[0], s[1])
     return geo_loc  
+
+def parseGeoPt(location):
+    '''Returns a lat and lon from a GeoPt'''
+    _trace = TRACE+'parseGeoPt('+str(location)+') '
+    logging.info(_trace)    
+    s = str.split(str(location), ',')
+    logging.info(_trace+'s = '+str(s))
+    logging.info(_trace+'s[0] = '+str(s[0]))
+    logging.info(_trace+'s[1] = '+str(s[1]))
+    return s[0], s[1]
     
 def findMissingParams(self, *params):
     '''Returns a List of missing parameters.

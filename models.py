@@ -93,7 +93,6 @@ class JSONProperty(db.TextProperty):
 
 ############################# DATASTORE MODELS ###############################
 ##############################################################################
-
 class UserPrefs(db.Model): # user.user_id() s is key_name
     created = db.DateTimeProperty(auto_now_add=True)
     updated = db.DateTimeProperty(auto_now=True)
@@ -353,25 +352,35 @@ class Pin(polymodel.PolyModel):
     location = db.GeoPtProperty(required=True)
     created = db.DateTimeProperty(auto_now_add=True)
     updated = db.DateTimeProperty(auto_now=True)  
-    name = db.IntegerProperty(required=False)  
+    name = db.StringProperty(required=False)  
     description = db.TextProperty(required=False)
+    log = JSONProperty(required=False)
     
-class Battle(Pin): # The location of a battle      
-    attackers = db.ListProperty(db.Key, required=True)    
-    defenders = db.ListProperty(db.Key, required=True)  
-    winner = db.StringProperty(required=True)
+class BattlePin(Pin): # The location of a battle      
+    players = db.ListProperty(db.Key, required=True)    
+    monsters = db.ListProperty(db.Key, required=True)  
+    # log {'players':[{'name': name, 'damage': damage, 
+    #                  'damage_keywords': ['Fire','Force'],
+    #                  'killed': False},
+    #                 {'name': name, 'damage': damage, 
+    #                  'damage_keywords': ['Fire','Force'],
+    #                  'killed': False}],
+    #      'monsters':[same as players]} 
+    
+class PartyPin(Pin):
+    party = db.ReferenceProperty(Party, required=True)    
 
-class Capital(Pin):  # The Capital for a Guild     
+class CapitalPin(Pin):  # The Capital for a Guild     
     guild = db.ReferenceProperty(Guild, required=True)
     
-class Dungeon(Pin): # The location of a Dungeon
+class DungeonPin(Pin): # The location of a Dungeon
     owner = db.ReferenceProperty(PlayerCharacter, required=True)
 
-class Event(Pin): # The location of an Event
+class EventPin(Pin): # The location of an Event
     start_date = db.DateTimeProperty(required=True)
     end_date = db.DateTimeProperty(required=True)
 
-class Checkin(Pin): # The location of an active Player
+class CheckinPin(Pin): # The location of an active Player
     character = db.ReferenceProperty(Character, required=True)
     action = db.StringProperty(required=True)
     

@@ -1,4 +1,5 @@
 application: d20m-morningstar
+version: 1
 runtime: python
 api_version: 1
 

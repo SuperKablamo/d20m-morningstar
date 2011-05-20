@@ -44,10 +44,10 @@ def getJSONPlayer(player):
             'purse': player.purse, 'resist': player.resist,
             'vulnerable': player.vulnerable, 'key': str(player.key())}
 
-    if nonplayer.class_name() == 'PlayerCharacterTemplate':
-        json['template_id'] = nonplayer.template_id
+    if player.class_name() == 'PlayerCharacterTemplate':
+        json['template_id'] = player.template_id
 
-    if nonplayer.class_name() == 'Player':
+    if player.class_name() == 'Player':
         if player.user:
            json['user'] = player.user.nickname()
     

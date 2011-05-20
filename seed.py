@@ -36,6 +36,11 @@ from google.appengine.ext.webapp import util
 from google.appengine.ext.webapp import template
 from google.appengine.ext.webapp.util import run_wsgi_app
 
+# Fusion Table
+from authorization.oauth import OAuth
+from sql.sqlbuilder import SQL
+import ftclient
+
 ######################## CONSTANTS ###########################################
 ##############################################################################
     
@@ -152,6 +157,29 @@ CAST_DATA = [
      'skill_mods': [],     
      'defense_mods': [{'origin': 'Barbarian', 'type': 'FORT', 'mod': 2}],
      'armor_profs': ['Cloth', 'Leather', 'Hide'] }]     
+
+MAP_DATA = [
+    {'lat': 36.14 ,'lon': -115.14,'name': 'Battle', 
+     'description': 'A tragic loss occured this day!',
+     'players':['ahBkMjBtLW1vcm5pbmdzdGFycg8LEglDaGFyYWN0ZXIYdww'], 
+     'monsters': ['ahBkMjBtLW1vcm5pbmdzdGFycg8LEglDaGFyYWN0ZXIYfAw', 
+                  'ahBkMjBtLW1vcm5pbmdzdGFycg8LEglDaGFyYWN0ZXIYeww']},
+    {'lat': 36.16,'lon': -115.10,'name': 'Battle', 
+     'description': 'A tragic loss occured this day!',
+     'players':['ahBkMjBtLW1vcm5pbmdzdGFycg8LEglDaGFyYWN0ZXIYdww'], 
+     'monsters': ['ahBkMjBtLW1vcm5pbmdzdGFycg8LEglDaGFyYWN0ZXIYfAw', 
+                  'ahBkMjBtLW1vcm5pbmdzdGFycg8LEglDaGFyYWN0ZXIYeww']},    
+    {'lat': 36.12,'lon': -115.16,'name': 'Battle', 
+     'description': 'A tragic loss occured this day!',
+     'players':['ahBkMjBtLW1vcm5pbmdzdGFycg8LEglDaGFyYWN0ZXIYdww'], 
+     'monsters': ['ahBkMjBtLW1vcm5pbmdzdGFycg8LEglDaGFyYWN0ZXIYfAw', 
+                  'ahBkMjBtLW1vcm5pbmdzdGFycg8LEglDaGFyYWN0ZXIYeww']},    
+    {'lat': 36.10,'lon': -115.13,'name': 'Battle', 
+     'description': 'A tragic loss occured this day!',
+     'players':['ahBkMjBtLW1vcm5pbmdzdGFycg8LEglDaGFyYWN0ZXIYdww'], 
+     'monsters': ['ahBkMjBtLW1vcm5pbmdzdGFycg8LEglDaGFyYWN0ZXIYfAw', 
+                  'ahBkMjBtLW1vcm5pbmdzdGFycg8LEglDaGFyYWN0ZXIYeww']}    
+    ]
      
 ######################## METHODS #############################################
 ##############################################################################
@@ -310,3 +338,45 @@ def seedPlayerParty():
     
     db.put(player_party)
     return                                      
+
+def seedFTData():
+    '''Seeds a Fusion Table with data.
+    '''
+    _trace = TRACE+'seedFTData() '
+    logging.info(_trace)       
+    url, token, secret = OAuth().generateAuthorizationURL(OAUTH_KEY, OAUTH_SECRET, OAUTH_KEY)
+    token, secret = OAuth().authorize(OAUTH_KEY, OAUTH_SECRET, token, secret)
+    oauth_client = ftclient.OAuthFTClient(OAUTH_KEY, OAUTH_SECRET, token, secret)
+    results = oauth_client.query(SQL().showTables())
+    logging.info(_trace+str(results))
+    return
+    
+def seedPins():
+    '''Seeds Pins for testing Maps API.
+    '''
+    _trace = TRACE+'seedPins() '
+    logging.info(_trace)   
+    updated = []
+    for m in MAP_DATA:
+        logging.info(_trace+str(m))
+        logging.info(_trace+'name = '+str(m['name']))
+        location = db.GeoPt(m['lat'], m['lon'])
+        players = []
+        monsters = []
+        for x in m['players']:
+            players.append(db.Key(x)) 
+        for x in m['monsters']:
+            monsters.append(db.Key(x))
+        
+        battle = models.BattlePin(location = location,
+                                  name = m['name'],
+                                  description = m['description'],
+                                  monsters = monsters,
+                                  players = players)
+        
+        updated.append(battle)
+    
+    db.put(updated)                              
+    return    
+    
+    
