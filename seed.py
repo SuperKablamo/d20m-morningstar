@@ -158,7 +158,7 @@ CAST_DATA = [
      'defense_mods': [{'origin': 'Barbarian', 'type': 'FORT', 'mod': 2}],
      'armor_profs': ['Cloth', 'Leather', 'Hide'] }]     
 
-MAP_DATA = [
+MAP_DATA1 = [
     {'lat': 36.14 ,'lon': -115.14,'name': 'Battle', 
      'description': 'A tragic loss occured this day!',
      'players':['ahBkMjBtLW1vcm5pbmdzdGFycg8LEglDaGFyYWN0ZXIYdww'], 
@@ -179,6 +179,21 @@ MAP_DATA = [
      'players':['ahBkMjBtLW1vcm5pbmdzdGFycg8LEglDaGFyYWN0ZXIYdww'], 
      'monsters': ['ahBkMjBtLW1vcm5pbmdzdGFycg8LEglDaGFyYWN0ZXIYfAw', 
                   'ahBkMjBtLW1vcm5pbmdzdGFycg8LEglDaGFyYWN0ZXIYeww']}    
+    ]
+
+MAP_DATA2 = [
+    {'lat': 36.145 ,'lon': -115.148,'name': 'Party', 
+     'description': 'A tragic loss occured this day!',
+     'party': 'ahBkMjBtLW1vcm5pbmdzdGFycgsLEgVQYXJ0eRh4DA'},
+    {'lat': 36.14,'lon': -115.16,'name': 'Party', 
+     'description': 'A tragic loss occured this day!',
+     'party': 'ahBkMjBtLW1vcm5pbmdzdGFycgsLEgVQYXJ0eRh4DA'},    
+    {'lat': 36.1235,'lon': -115.155,'name': 'Party', 
+     'description': 'A tragic loss occured this day!',
+     'party': 'ahBkMjBtLW1vcm5pbmdzdGFycgsLEgVQYXJ0eRh4DA'},    
+    {'lat': 36.11,'lon': -115.14,'name': 'Party', 
+     'description': 'A tragic loss occured this day!',
+     'party': 'ahBkMjBtLW1vcm5pbmdzdGFycgsLEgVQYXJ0eRh4DA'}    
     ]
      
 ######################## METHODS #############################################
@@ -357,7 +372,7 @@ def seedPins():
     _trace = TRACE+'seedPins() '
     logging.info(_trace)   
     updated = []
-    for m in MAP_DATA:
+    for m in MAP_DATA1:
         logging.info(_trace+str(m))
         logging.info(_trace+'name = '+str(m['name']))
         location = db.GeoPt(m['lat'], m['lon'])
@@ -375,6 +390,20 @@ def seedPins():
                                   players = players)
         
         updated.append(battle)
+
+    for m in MAP_DATA2:
+        logging.info(_trace+str(m))
+        logging.info(_trace+'name = '+str(m['name']))
+        location = db.GeoPt(m['lat'], m['lon'])
+        party = db.Key(m['party'])
+        
+        party_pin = models.MonsterPartyPin(location = location,
+                                    name = m['name'],
+                                    description = m['description'],
+                                    monster_party = party)
+        
+        updated.append(party_pin)
+
     
     db.put(updated)                              
     return    

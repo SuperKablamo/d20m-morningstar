@@ -16,6 +16,7 @@ import utils
 
 from model import character
 from model import party
+from model import pin
 from settings import *
 
 ############################# GAE IMPORTS ####################################

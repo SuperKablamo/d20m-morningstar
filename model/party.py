@@ -14,6 +14,7 @@
 import models
 import rules
 
+from model import pin
 from settings import *
 from utils import roll
 
@@ -38,9 +39,9 @@ def getJSONParty(party):
     if party.class_name() == 'PlayerParty':
         json['leader'] = str(party.leader.key())
         members = []
-        for m in party.members:
+        for m in party.players:
             members.append(str(m))
-        json['members'] = str(members)
+        json['players'] = str(players)
 
     if party.class_name() == 'NonPlayerParty':
         if party.owner:
@@ -61,10 +62,10 @@ def updateJSONParty(party, *characters):
     
     return
 
-def createJSONParty(character, location):       
-    '''Creates a new Party for the Character, and Returns a JSON 
-    representation of the Party.
-    '''
+def createJSONParty(leader, location, players=None):       
+    """Creates a new Party for the Character.
+    Returns: JSON representation of the Party.
+    """
     _trace = TRACE+'createJSONParty() '
     logging.info(_trace)
     log = {'encounter_log': 
@@ -72,15 +73,19 @@ def createJSONParty(character, location):
             'last_encounter': {'time_since': 0, 'checks': 0}}}
             
     party = models.PlayerParty(location = location,
-                               leader = character,
-                               members = [character.key()],
+                               leader = leader,
+                               players = [leader.key()],
                                log = log)
+
+    db.put(party)
     
-    updates = [party,character]
-    db.put(updates)
-    json = {'key': str(party.key()), 'leader_key': str(party.leader.key()), 
-            'location': str(location), 'members': [str(party.leader.key())],
-            'log': str(log)}
+    _pin = pin.createPlayerPartyPin(location, 
+                                    party, 
+                                    leader)
+                                    
+    json = {'key': str(party.key()), 'pin_key': str(_pin.key()),   
+            'leader_key': str(party.leader.key()), 'location': str(location), 
+            'players': [str(party.leader.key())], 'log': str(log)}
                          
     return json
 

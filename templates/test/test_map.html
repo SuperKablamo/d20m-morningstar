@@ -15,29 +15,124 @@
 </script>
 <script type="text/javascript">
   function initialize() {
-    var latlng = new google.maps.LatLng(36.13, -115.13);
+    var latlng = new google.maps.LatLng(36.14, -115.14);
  	  var myLatlng = new google.maps.LatLng(36.14,-115.14);
     var myOptions = {
-      zoom: 11,
+      zoom: 12,
       center: latlng,
       mapTypeId: google.maps.MapTypeId.ROADMAP
     };
     var map = new google.maps.Map(document.getElementById("map_canvas"),
         myOptions);
-		setMarkers(map, battles)
+		setMonsterPartyMarkers(map, monsters);
+		setPlayerPartyMarkers(map, players);
+		setBattleMarkers(map, battles);
   }
-	var battles = {{pins}};
-	function setMarkers(map, locations) {
+	var players = {{players}};
+	var monsters = {{monsters}};
+	var battles = {{battles}};
+	function setMonsterPartyMarkers(map, locations) {
+	  var image = new google.maps.MarkerImage('/static/images/pin-monster-party.png',
+	      new google.maps.Size(32, 32),
+	      new google.maps.Point(0,0),
+	      new google.maps.Point(16, 32));
+	  var shadow = new google.maps.MarkerImage('/static/images/pin-shadow.png',
+	      // The shadow image is larger in the horizontal dimension
+	      // while the position and offset are the same as for the main image.
+	      new google.maps.Size(32, 32),
+	      new google.maps.Point(0,0),
+	      new google.maps.Point(-2,32));
+	      // Shapes define the clickable region of the icon.
+	      // The type defines an HTML <area> element 'poly' which
+	      // traces out a polygon as a series of X,Y points. The final
+	      // coordinate closes the poly by connecting to the first
+	      // coordinate.
+	  var shape = {
+	      coord: [1, 1, 1, 20, 18, 20, 18 , 1],
+	      type: 'poly'
+	  };
+		
 	  for (var i = 0; i < locations.length; i++) {
-	    var battle = locations[i];
-	    var location = new google.maps.LatLng(battle['lat'], battle['lon']);
+	    var pin = locations[i];
+	    var location = new google.maps.LatLng(pin['lat'], pin['lon']);
 	    var marker = new google.maps.Marker({
 	        position: location,
 	        map: map,
-	        title: battle['name']
+					icon: image,
+					shape: shape,
+					shadow: shadow,
+	        title: pin['name']
 	    });
 	  }
 	}
+	function setPlayerPartyMarkers(map, locations) {
+	  var image = new google.maps.MarkerImage('/static/images/pin-death.png',
+	      new google.maps.Size(32, 32),
+	      new google.maps.Point(0,0),
+	      new google.maps.Point(16, 32));
+	  var shadow = new google.maps.MarkerImage('/static/images/pin-shadow.png',
+	      // The shadow image is larger in the horizontal dimension
+	      // while the position and offset are the same as for the main image.
+	      new google.maps.Size(32, 32),
+	      new google.maps.Point(0,0),
+	      new google.maps.Point(2,32));
+	      // Shapes define the clickable region of the icon.
+	      // The type defines an HTML <area> element 'poly' which
+	      // traces out a polygon as a series of X,Y points. The final
+	      // coordinate closes the poly by connecting to the first
+	      // coordinate.
+	  var shape = {
+	      coord: [1, 1, 1, 20, 18, 20, 18 , 1],
+	      type: 'poly'
+	  };
+		
+	  for (var i = 0; i < locations.length; i++) {
+	    var pin = locations[i];
+	    var location = new google.maps.LatLng(pin['lat'], pin['lon']);
+	    var marker = new google.maps.Marker({
+	        position: location,
+	        map: map,
+					icon: image,
+					shape: shape,
+					shadow: shadow,
+	        title: pin['name']
+	    });
+	  }
+	}	
+	function setBattleMarkers(map, locations) {
+	  var image = new google.maps.MarkerImage('/static/images/pin-battle.png',
+	      new google.maps.Size(35, 44),
+	      new google.maps.Point(0,0),
+	      new google.maps.Point(17, 44));
+	  var shadow = new google.maps.MarkerImage('/static/images/pin-shadow-square.png',
+	      // The shadow image is larger in the horizontal dimension
+	      // while the position and offset are the same as for the main image.
+	      new google.maps.Size(46, 28),
+	      new google.maps.Point(0,0),
+	      new google.maps.Point(0,28));
+	      // Shapes define the clickable region of the icon.
+	      // The type defines an HTML <area> element 'poly' which
+	      // traces out a polygon as a series of X,Y points. The final
+	      // coordinate closes the poly by connecting to the first
+	      // coordinate.
+	  var shape = {
+	      coord: [1, 1, 1, 20, 18, 20, 18 , 1],
+	      type: 'poly'
+	  };
+		
+	  for (var i = 0; i < locations.length; i++) {
+	    var pin = locations[i];
+	    var location = new google.maps.LatLng(pin['lat'], pin['lon']);
+	    var marker = new google.maps.Marker({
+	        position: location,
+	        map: map,
+					icon: image,
+					shape: shape,
+					shadow: shadow,
+	        title: pin['name']
+	    });
+	  }
+	}	
 </script>
 {% endblock %}
 

@@ -169,7 +169,7 @@ class Test(webapp.RequestHandler):
             items = db.get(character.items)
             powers = db.get(character.powers)
             party = models.PlayerParty.all().filter('leader = ', character).get()
-            monster_party = models.NonPlayerParty.get_by_id(125)
+            monster_party = models.NonPlayerParty.get_by_id(171)
             monsters = db.get(monster_party.monsters)
             template_values = {
                 'party': party,
@@ -183,14 +183,32 @@ class Test(webapp.RequestHandler):
             generate(self, 'test/test_attack.html', template_values)   
         
         elif method == "map": 
-            pins = models.BattlePin.all().fetch(100)
-            json = []
-            for p in pins:
+            battles = models.BattlePin.all().fetch(100)
+            monsters = models.MonsterPartyPin.all().fetch(100)
+            players = models.PlayerPartyPin.all().fetch(100) 
+            battles_json = []
+            monsters_json = []
+            players_json = []
+            for b in battles:
+                lat, lon = utils.parseGeoPt(b.location)
+                data = {'name': b.name,'lat': lat,'lon': lon}
+                battles_json.append(data)
+            for m in monsters:
+                lat, lon = utils.parseGeoPt(m.location)
+                data = {'name': m.name,'lat': lat,'lon': lon}
+                monsters_json.append(data)  
+            for p in players:
                 lat, lon = utils.parseGeoPt(p.location)
                 data = {'name': p.name,'lat': lat,'lon': lon}
-                json.append(data)
+                players_json.append(data)
+              
+            logging.info(_trace+'battles = '+simplejson.dumps(battles_json))
+            logging.info(_trace+'monsters = '+simplejson.dumps(monsters_json))
+            logging.info(_trace+'players = '+simplejson.dumps(players_json))
             template_values = {
-                'pins': simplejson.dumps(json)
+                'players': simplejson.dumps(players_json),
+                'monsters': simplejson.dumps(monsters_json),
+                'battles': simplejson.dumps(battles_json)
             }        
             generate(self, 'test/test_map.html', template_values)
                      

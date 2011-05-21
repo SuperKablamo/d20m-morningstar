@@ -341,7 +341,7 @@ class Party(polymodel.PolyModel): # A party of PCs or NPCs
 
 class PlayerParty(Party):
     leader = db.ReferenceProperty(PlayerCharacter, required=True)
-    members = db.ListProperty(db.Key, required=True)
+    players = db.ListProperty(db.Key, required=True)
     
 class NonPlayerParty(Party):        
     owner = db.UserProperty(required=False) # The id of a user or admin
@@ -367,8 +367,19 @@ class BattlePin(Pin): # The location of a battle
     #                  'killed': False}],
     #      'monsters':[same as players]} 
     
-class PartyPin(Pin):
-    party = db.ReferenceProperty(Party, required=True)    
+class MonsterPartyPin(Pin):
+    monster_party = db.ReferenceProperty(Party, required=True)    
+    # log {'monsters':[{'key': key, 'name': name, 'level': level},
+    #                  {'key': key, 'name': name, 'level': level}]
+    
+class PlayerPartyPin(Pin):
+    player_party = db.ReferenceProperty(Party, required=True) 
+    # log {'players':[{'key': key, 'name': name, 'level': level},
+    #                 {'key': key, 'name': name, 'level': level}]
+    
+class KillPin(Pin):
+    player = db.ReferenceProperty(Player, required=True)       
+    # log {'key': key, 'name': name, 'killer': name}
 
 class CapitalPin(Pin):  # The Capital for a Guild     
     guild = db.ReferenceProperty(Guild, required=True)
@@ -380,8 +391,5 @@ class EventPin(Pin): # The location of an Event
     start_date = db.DateTimeProperty(required=True)
     end_date = db.DateTimeProperty(required=True)
 
-class CheckinPin(Pin): # The location of an active Player
-    character = db.ReferenceProperty(Character, required=True)
-    action = db.StringProperty(required=True)
     
 ##############################################################################  

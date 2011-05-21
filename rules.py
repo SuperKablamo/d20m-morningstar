@@ -15,11 +15,13 @@ import utils
 from model import character
 from model import loot
 from model import monster
+from model import pin
 from settings import *
 
 ############################# GAE IMPORTS ####################################
 ##############################################################################
 import logging
+import random
 import time
 
 from google.appengine.ext import db
@@ -237,8 +239,8 @@ def rollEncounter(player_party, geo_pt):
                                               json = {'monsters': []})
         
         # Get number of PCs and the average level of the Party ...
-        party_size = len(player_party.members)
-        members = db.get(player_party.members)
+        party_size = len(player_party.players)
+        members = db.get(player_party.players)
         total = 0
         for m in members:
             total = total + m.level
@@ -461,7 +463,7 @@ def rollEncounter(player_party, geo_pt):
                 npc = db.get(npc_key)
                 minion_party_size = party_size*4
                 for i in minion_party_size:
-                    m = modles.Monster(npc = npc_key,
+                    m = models.Monster(npc = npc_key,
                                        json = character.getJSONNonPlayer(npc))
 
                     entities.append(m)                    
@@ -478,12 +480,52 @@ def rollEncounter(player_party, geo_pt):
 
     parties = [player_party, monster_party]        
     db.put(parties)
+    
+    # Create pin
+    monster_loc = spawnLocation(player_party.location)    
+    _pin = pin.createMonsterPartyPin(monster_loc, monster_party, entities)
+    monster_party.json['pin_key'] = str(_pin.key())
+
     return monster_party    
 
 def logBattle(location, loot, *characters):
     '''Stores a summary of a battle. 
     '''
     return True
+    
+def spawnLocation(location, meters=60):
+    """Creates a new location within random meters of provided location.
+    Returns: a new location.
+    """   
+    _trace=TRACE+"spawnLocation() "
+    logging.info(_trace)
+    lat, lon = utils.parseGeoPt(location)
+    
+    # Randomly determine distance of new lat/lon
+    ran_lat_meters = utils.roll(meters, 1)
+    ran_lon_meters = utils.roll(meters, 1)
+    lat_meters = ran_lat_meters*.00001
+    lon_meters = ran_lon_meters*.00001
+
+    # Randomly determine direction of new lat/lon
+    pos_lat_vector = random.choice([True, False])
+    pos_lon_vector = random.choice([True, False])
+    lat = utils.strToIntOrFloat(lat)
+    lon = utils.strToIntOrFloat(lon)
+    new_lat = lat
+    new_lon = lon
+    if pos_lat_vector == False:
+        new_lat = lat - lat_meters  
+    else:
+        new_lat = lat + lat_meters              
+
+    if pos_lon_vector == False:
+        new_lon = lon - lon_meters
+    else:
+        new_lat = lat + lat_meters
+                
+    new_location = db.GeoPt(str(new_lat), str(new_lon))
+    return new_location
 
 ######################## DATA ################################################
 ##############################################################################    

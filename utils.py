@@ -31,6 +31,17 @@ def strToInt(s):
         i = 0       
     return i
 
+def strToIntOrFloat(s):
+ 	"""Convert string to either int or float.
+ 	Returns: int or float.
+ 	"""
+ 	try:
+ 		ret = int(s)
+ 	except ValueError:
+	    #Try float.
+		ret = float(s)
+ 	return ret
+
 def parseLocation(location):
     '''Returns a GeoPt from a lat/lon String
     '''
