@@ -391,5 +391,4 @@ class EventPin(Pin): # The location of an Event
     start_date = db.DateTimeProperty(required=True)
     end_date = db.DateTimeProperty(required=True)
 
-    
 ##############################################################################  

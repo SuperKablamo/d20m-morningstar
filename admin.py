@@ -245,7 +245,7 @@ class Home(webapp.RequestHandler):
             'monsters': simplejson.dumps(monsters_json),
             'battles': simplejson.dumps(battles_json)
         }        
-        generate(self, 'test/test_home.html', template_values)
+        generate(self, 'main.html', template_values)
                      
 ######################## METHODS #############################################
 ##############################################################################
