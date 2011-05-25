@@ -9,8 +9,10 @@
 html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, font, img, ins, kbd, q, s, samp, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, small, fieldset, form, label, legend { margin: 0; padding: 0; border: 0; outline: 0; vertical-align: baseline; background: transparent; }
 
 /*COMMON STYLES*/
-body { font-family:Verdana,Helvetica,Tahoma,Arial,sans-serif; font-size:62.5%; color:#181818; }
-a { color:#c36931; cursor:pointer; outline:medium none; text-decoration:none; }
+html { height:100%}
+body { height:100%; margin:0px; padding:0px; font-family:Arial,sans-serif; font-size:62.5%; color:#181818; background-color:#000; }
+#content { width:800px; }
+a { color:#cc3333; cursor:pointer; outline:medium none; text-decoration:none; }
 h1, h2, h3, h4, h5 { font-weight:normal; }
 #title a { font-weight: normal; margin: 5px 0; font-size: 3em; clear: both; }
 #header, #footer {color: #fff; }
@@ -26,14 +28,45 @@ h1#error { font-size: 40px; color: red; }
 p.info { padding:10px; }
 
 /*HEADER*/
-#header-wrap {padding:12px 20px 20px 20px; background-color:#ccc; height:100px;}
-#logo {background:url("/static/images/logo-d20.png") no-repeat; width:64px; height:100px; float:left;}
-#title {float:left; margin:4px 0 0 4px;}
-h1 {font-family:'IM Fell English SC',arial,serif; font-size:4.6em;}
-#title h2, #android h2 {font-family:'IM Fell English SC',arial,serif; font-size:1.8em; padding:6px 0 0 8px;}
-#title h2 {padding:6px 0 0 8px;}
-#android h2 {padding:0;}
-#android {float:right; padding:50px 0 0 0;}
-#logo-android {background:url("/static/images/logo-android-tiny.png") no-repeat; width:60px; height:60px; float:right;}
-#text-android {float:left; padding:20px 0 0 0;}
+#header-wrap { padding:12px 20px 20px 20px; background-color:#ccc; height:86px; width:760px; }
+#logo { background:url("/static/images/logo-d20.png") no-repeat; width:64px; height:100px; float:left; }
+#title { float:left; margin:4px 0 0 4px; }
+h1 { font-family:'IM Fell English SC',arial,serif; font-size:4.6em; }
+#title h2, #android h2 {font-family:'IM Fell English SC',arial,serif; font-size:1.8em; padding:6px 0 0 8px; }
+#title h2 { padding:6px 0 0 8px; }
+/* use for highlighting LARP in tagline */
+h2 span.highlight { color:#181818; font-size:1.0em; } 
 
+/*BETA*/
+#beta-wrap { float:right; width:190px;}
+#beta { width:190px; height:52px; background:url("/static/images/join-the-beta.png") no-repeat; margin-top:12px; }
+#android { padding:0 0 0 0; }
+#text-android { float:left; margin:6px 0 0 20px; }
+#android h2 { padding:0; }
+#logo-android { background:url("/static/images/logo-android-tiny.png") no-repeat; width:60px; height:60px; float:right; margin:-14px 8px 0 0; }
+
+/*MAP*/
+#map_canvas { height:388px; width:788px; border:6px solid #ddd; }
+
+/*COLUMNS*/
+#columns { width:760px; clear:both; overflow:hidden; padding:10px 20px; color: #333; background-color:#fff; }
+#columns h2 { font-family:'IM Fell English SC',arial,serif; font-size:2.2em; padding:6px 0 0 0; }
+
+/*FEED*/
+#news { float:left; width:420px; }
+#news .update { border-bottom:1px dotted #666; }
+#news .update-wrap { padding:6px 0; font-size:1.4em; width:100%; }
+
+/*GAMEPLAY*/
+#game-play { float:right; width:240px; }
+#summary-wrap { }
+#summary-wrap .summary { clear:both; }
+#summary-wrap .mark { float:left; }
+#summary-wrap .summary-text { float:left; font-family:'IM Fell English SC',arial,serif; font-size:2em; text-align:center; margin:4px 0 0 10px; width:120px; }
+
+
+
+/*FOOTER*/
+#footer-wrap { padding:6px 20px 16px 20px; background-color:#ccc; }
+#footer-wrap p { padding:12px 0 0 0;text-align:center; font-size:1.2em; }
+#footer-wrap p.nav { font-family:'IM Fell English SC',arial,serif; font-size:1.8em; }
