@@ -55,7 +55,10 @@ h2 span.highlight { color:#181818; font-size:1.0em; }
 /*FEED*/
 #news { float:left; width:420px; }
 #news .update { border-bottom:1px dotted #666; }
-#news .update-wrap { padding:6px 0; font-size:1.4em; width:100%; }
+#news .update-wrap { padding:6px 0; font-size:1.4em; }
+#news .tags { float:left; margin-right:8px; }
+#news .status { margin:4px 0; padding-left:62px; }
+#news .time { font-size:.8em; }
 
 /*GAMEPLAY*/
 #game-play { float:right; width:240px; }
@@ -63,8 +66,6 @@ h2 span.highlight { color:#181818; font-size:1.0em; }
 #summary-wrap .summary { clear:both; }
 #summary-wrap .mark { float:left; }
 #summary-wrap .summary-text { float:left; font-family:'IM Fell English SC',arial,serif; font-size:2em; text-align:center; margin:4px 0 0 10px; width:120px; }
-
-
 
 /*FOOTER*/
 #footer-wrap { padding:6px 20px 16px 20px; background-color:#ccc; }
