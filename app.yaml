@@ -29,5 +29,8 @@ handlers:
 - url: /auth/.*
   script: auth.py
 
+- url: /mobile/.*
+  script: mobile.py  
+
 - url: /.*
   script: main.py   
