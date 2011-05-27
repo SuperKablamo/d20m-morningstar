@@ -9,7 +9,7 @@
 				<h1>Adventure with:</h1>
 				<div id="buttons">
 				{% for c in characters %}
-					<a href="index.html" data-role="button">{{c.name}}</a> 					
+					<a href="/mobile/character/{{c.key}}" data-role="button">{{c.name}}</a> 					
 				{% endfor %}
 					<a href="/mobile/character/create" data-role="button">CREATE NEW CHARACTER</a> 		
 				</div><!-- /buttons -->

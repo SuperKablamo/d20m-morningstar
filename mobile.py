@@ -12,6 +12,7 @@
 import models
 import rules
 
+from model import character
 from settings import *
 
 ############################# GAE IMPORTS ####################################
@@ -52,17 +53,44 @@ class MainHandler(BaseHandler):
 
 class CharacterHandler(BaseHandler):
     def get(self):
-        pc_templates = models.PlayerCharacterTemplate.all().fetch(100) 
+        _trace = TRACE+'CharacterHandler.get() '
+        logging.debug(_trace)        
+        templates = models.PlayerCharacterTemplate.all().fetch(100) 
         user = users.get_current_user()
         template_values = {
-            'pc_templates': pc_templates,
+            'templates': templates,
             'user': user
         }        
         generate(self, 'character_create.html', template_values)
-
         
-    def post(self, key):                  
-        return
+    def post(self):  
+        _trace = TRACE+'CharacterHandler.post() '
+        logging.debug(_trace)
+        user = users.get_current_user()
+        key = self.request.get('template')
+        name = self.request.get('name')
+        template = db.get(key)
+        if template is not None:
+            player = character.createPlayerFromTemplate(template, name, user)
+
+        template_values = {
+            'player': player,
+            'template': template,
+            'user': user
+        }        
+        generate(self, 'character_sheet.html', template_values)        
+
+class CharacterSheetHandler(BaseHandler):
+    def get(self, key):
+        _trace = TRACE+'CharacterSheetHandler.get() '
+        logging.debug(_trace)        
+        character = db.get(key) 
+        user = users.get_current_user()
+        template_values = {
+            'character': character,
+            'user': user
+        }        
+        generate(self, 'character_sheet.html', template_values)
 
 ######################## METHODS #############################################
 ##############################################################################
@@ -79,8 +107,8 @@ def generate(self, template_name, template_values):
 ##############################################################################
 application = webapp.WSGIApplication([('/mobile/character/create', 
                                        CharacterHandler),
-                                      (r'/mobile/character/create/(.*)', 
-                                       CharacterHandler),
+                                      (r'/mobile/character/(.*)', 
+                                       CharacterSheetHandler),
                                       (r'/mobile/.*', 
                                        MainHandler)
                                      ],
