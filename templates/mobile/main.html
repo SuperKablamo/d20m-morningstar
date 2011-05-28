@@ -2,7 +2,7 @@
 <html lang="en"> 
 	<head> 
 		{% block title %}
-		<title>d20mobile - Morningstar</title> 
+		<title>d20morningstar</title> 
 		{% endblock %}
 		<link rel="stylesheet" href="http://code.jquery.com/mobile/1.0a4.1/jquery.mobile-1.0a4.1.min.css" />
 		<link rel="stylesheet" href="/static/css/android.css" />
@@ -13,23 +13,14 @@
 		<div data-role="page" id="page">
 			
 			{% block header %}
-			<div data-role="header" data-theme="d">
-				<h1><img src="/static/images/logo-d20-mobile.png"></h1>
-			</div><!-- /header -->
 			{% endblock %}
 			
 			{% block content %}
-			<div data-role="content" id="content">	
-				<h1>Adventure with:</h1>
-				<div id="buttons">
-				{% for c in characters %}
-					<a href="index.html" data-role="button">{{c.name}}</a> 					
-				{% endfor %}
-					<a href="/mobile/character/create" data-role="button">CREATE NEW CHARACTER</a> 		
-				</div><!-- /buttons -->
-			</div><!-- /content -->
 			{% endblock %}
-			
+
+			{% block footer %}
+			{% endblock %}
+						
 		</div><!-- /page -->		
 	</body>	
 </html>		

@@ -4,9 +4,15 @@
 		<title>d20mobile - Morningstar</title> 
 		{% endblock %}
 			
+			{% block header %}
+			<div data-role="header" data-theme="d">
+				<h1>Start</h1>
+			</div><!-- /header -->			
+			{% endblock %}
+			
 			{% block content %}
 			<div data-role="content" id="content">	
-				<h1>Adventure with:</h1>
+				<h2>Adventure with:</h2>
 				<div id="buttons">
 				{% for c in characters %}
 					<a href="/mobile/character/{{c.key}}" data-role="button">{{c.name}}</a> 					

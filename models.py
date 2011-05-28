@@ -200,8 +200,8 @@ class Power(polymodel.PolyModel):
     updated = db.DateTimeProperty(auto_now=True)    
     name = db.StringProperty(required=True)
     description = db.TextProperty(required=True)
-    recharge = db.IntegerProperty(required=True) # Seconds to recharge
-    level = db.IntegerProperty(required=True) # Level requirement
+    recharge = db.IntegerProperty(required=True, default=0) # Seconds to recharge
+    level = db.IntegerProperty(required=True, default=0) # Level requirement
     source_keyword = db.StringProperty(required=False) 
     casts = db.StringListProperty(required=True, default=None) # Allowed Casts
     json = JSONProperty(required=False)
@@ -213,10 +213,10 @@ class Attack(Power):
     attack_ability = db.StringProperty(required=True) # Attacker ability
     attack_mod = db.IntegerProperty(required=True, default=0) # Attack bonus
     defense_ability = db.StringProperty(required=True) # Defender ability
-    damage_weapon_multiplier = db.IntegerProperty(required=False) # Damage multiplier for weapon used
+    damage_weapon_multiplier = db.IntegerProperty(required=False, default=0) # Damage multiplier for weapon used
     damage_ability_mod = db.StringProperty(required=False) # Type of damage die to roll
-    damage_dice = db.IntegerProperty(required=False) # Number of damage dice to roll
-    damage_die = db.IntegerProperty(required=False)
+    damage_dice = db.IntegerProperty(required=False, default=0) # Number of damage dice to roll
+    damage_die = db.IntegerProperty(required=False, default=0)
     effect = db.StringProperty(required=False)
     max_targets = db.IntegerProperty(required=True, default=1)
     max_attacks = db.IntegerProperty(required=True, default=1)

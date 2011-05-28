@@ -71,11 +71,10 @@ class CharacterHandler(BaseHandler):
         name = self.request.get('name')
         template = db.get(key)
         if template is not None:
-            player = character.createPlayerFromTemplate(template, name, user)
+            _character = character.createPlayerFromTemplate(template, name, user)
 
         template_values = {
-            'player': player,
-            'template': template,
+            'character': _character,
             'user': user
         }        
         generate(self, 'character_sheet.html', template_values)        
@@ -84,10 +83,11 @@ class CharacterSheetHandler(BaseHandler):
     def get(self, key):
         _trace = TRACE+'CharacterSheetHandler.get() '
         logging.debug(_trace)        
-        character = db.get(key) 
+        _character = db.get(key) 
+        player = character.getJSONPlayer(_character)
         user = users.get_current_user()
         template_values = {
-            'character': character,
+            'player': player,
             'user': user
         }        
         generate(self, 'character_sheet.html', template_values)
