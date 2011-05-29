@@ -1,7 +1,16 @@
 {% extends "main.html" %}
 
 		{% block title %}
-		<title>d20mobile - Morningstar</title> 
+		<title>d20morningstar - Start</title> 
+		{% endblock %}
+		
+		{% block script %}
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.0/jquery.js"></script>
+		{% endblock %}
+
+
+		{% block page-id %}
+		<div data-role="page" id="start">
 		{% endblock %}
 			
 			{% block header %}
@@ -17,7 +26,8 @@
 				{% for c in characters %}
 					<a href="/mobile/character/{{c.key}}" data-role="button">{{c.name}}</a> 					
 				{% endfor %}
-					<a href="/mobile/character/create" data-role="button">CREATE NEW CHARACTER</a> 		
+					<a href="/mobile/character/create" data-role="button" target="_blank">CREATE NEW CHARACTER</a> 		
 				</div><!-- /buttons -->
 			</div><!-- /content -->
 			{% endblock %}
+			

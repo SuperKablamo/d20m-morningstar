@@ -2,7 +2,7 @@
 # Copyright 2010 SuperKablamo, LLC
 # info@superkablamo.com
 #
-DEBUG = False
+DEBUG = True
 TRACE = '##TRACE##  '
 
 OAUTH_KEY = 'morningstar.d20m.com'

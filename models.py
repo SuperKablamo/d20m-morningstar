@@ -127,8 +127,8 @@ class PlayerCharacter(Character):
 class Player(PlayerCharacter):
     user = db.UserProperty(required=True)
     @property
-    def parties(self):
-        return PlayerParty.all().filter('members', self.key())
+    def party(self):
+        return PlayerParty.all().filter('players', self.key()).get()
         
 class PlayerCharacterTemplate(PlayerCharacter):
     template_id = db.IntegerProperty(required=True)            

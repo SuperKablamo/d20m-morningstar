@@ -1,7 +1,34 @@
 {% extends "main.html" %}
 
 		{% block title %}
-		<title>d20mobile - Morningstar</title> 
+		<title>d20morningstar - Character Create</title> 
+		{% endblock %}
+
+		{% block script %}
+		<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true&language=en"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.0/jquery.js"></script>
+		<script type="text/javascript">
+		$(function() {
+			$('#create').bind('pageshow', function() {
+        var success = function(position) {   
+					var coords = position.coords;
+          var lat = coords.latitude;
+ 					var lon = coords.longitude;
+					document.getElementById('lat').setAttribute('value',lat);
+					document.getElementById('lon').setAttribute('value',lon);					
+        };
+        var fail = function(e) {
+             alert('Can\'t retrieve position.\nError: ' + e);
+        };
+        navigator.geolocation.getCurrentPosition(success, fail);				
+			});
+		});
+		$('#perception-check').bind('click', function() {
+			$.getJSON('/mobile/')
+			
+		});
+	
+		</script>
 		{% endblock %}
 			
 		{% block header %}
@@ -9,6 +36,10 @@
 			<h1>Create</h1>
 		</div><!-- /header -->			
 		{% endblock %}
+
+		{% block page-id %}
+		<div data-role="page" id="create">
+		{% endblock %}			
 			
 		{% block content %}
 		<div data-role="content" id="content">	
@@ -16,6 +47,8 @@
 			<div data-role="fieldcontain" id="templates">
 				<form method="post">
 			  	<fieldset data-role="controlgroup">
+						<input type="hidden" id="lat" name="lat" value=""/>
+						<input type="hidden" id="lon" name="lon" value=""/>						
 						<label for="name">Name:</label>
 						<input type="text" name="name" id="name" value=""  /><br/>			<br/>		
 						<label for="name">Build:</label>						

@@ -1,7 +1,11 @@
 {% extends "main.html" %}
 
 		{% block title %}
-		<title>d20mobile - Morningstar</title> 
+		<title>d20morningstar - Character Sheet</title> 
+		{% endblock %}
+
+		{% block script %}
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.0/jquery.js"></script>
 		{% endblock %}
 			
 		{% block header %}
@@ -10,6 +14,9 @@
 		</div><!-- /header -->			
 		{% endblock %}
 			
+		{% block page-id %}
+		<div data-role="page" id="sheet">
+		{% endblock %}
 			
 			{% block content %}
 			<div data-role="content" id="content">	
@@ -119,9 +126,13 @@
 						{% endfor %}
 					</table>					
 				</div>
-				
-     	<a href="index.html" data-role="button" data-icon="arrow-r">Begin Quest!</a> 				
+		
 			</div><!-- /content -->
 			{% endblock %}
 
+			{% block footer %}
+			<div data-role="footer" data-theme="d" data-position="fixed" id="footer">
+	     	<a href="/mobile/character/{{player.key}}/quest" data-role="button" style="width:50%;" class="button">BEGIN QUEST</a> 				
+			</div><!-- /footer -->			
+			{% endblock %}
 

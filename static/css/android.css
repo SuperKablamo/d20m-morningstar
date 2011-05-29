@@ -5,4 +5,8 @@
 * 
 *****************************************************************************/
 #content { clear:both; text-align:center; margin:4px 20px; }
+#map-canvas { height:140px; width:320px; margin:10px; border:6px solid #ccc; }
 
+
+#footer { text-align:center;padding:10px; }
+#footer .button { width:50%; }
