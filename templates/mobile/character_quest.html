@@ -9,11 +9,89 @@
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.0/jquery.js"></script>
 		<script type="text/javascript">
 		$(function() {
+			var url = '/api/parties/{{party_key}}/quest';	
+			var lat;
+			var lon;
 			$('#quest').bind('pageshow', function() {
         var success = function(position) {   
 					var coords = position.coords;
-          var url = "http://maps.google.com/maps/api/staticmap?center=" + coords.latitude + "," + coords.longitude + "&zoom=14&size=320x140&maptype=roadmap&key=ABQIAAAApPeof0WyN6ORT7NeNop5OxQhS8mdepxW5-6qUjpskYmhafYcLRQjyW8D0bRdsydbD1maEkV9aSDKrw&sensor=true&markers=icon:http://morningstar.d20m.com/static/images/mark-player-32x48.png%7C" + coords.latitude + "," + coords.longitude;
-          document.getElementById('map').setAttribute('src',url);
+					var lat = coords.latitude
+					var lon =coords.longitude
+			    var player_loc = new google.maps.LatLng(lat, lon);
+				 	var myOptions = {
+				      zoom: 16,
+				      center: player_loc,
+				      mapTypeId: google.maps.MapTypeId.ROADMAP,
+							streetViewControl: false
+				  };
+				  var map = new google.maps.Map(document.getElementById("map-canvas"),
+				                                myOptions);
+					
+					setPlayerMarker(map, player_loc);
+					
+					function setPlayerMarker(map, latlon) {
+						var image = new google.maps.MarkerImage('/static/images/mark-player-32x40.png',
+			        	new google.maps.Size(32.0, 40.0),
+			        	new google.maps.Point(0, 0),
+			        	new google.maps.Point(16.0, 20.0));
+						var shadow = new google.maps.MarkerImage('/static/images/shadow-mark-monster-32x40.png',
+						    new google.maps.Size(53.0, 40.0),
+					      new google.maps.Point(0, 0),
+					      new google.maps.Point(16.0, 20.0));
+						var shape = {
+						    coord: [1, 1, 1, 20, 18, 20, 18 , 1],
+						    type: 'poly'
+						};
+						new google.maps.Marker({
+								position: latlon,
+						  	map: map,
+								icon: image,
+								shape: shape,
+								shadow: shadow
+						});
+					}
+					function setMonsterMarker(map, latlon) {
+
+						var image = new google.maps.MarkerImage('/static/images/mark-monster-32x40.png',
+			        	new google.maps.Size(32.0, 40.0),
+			        	new google.maps.Point(0, 0),
+			        	new google.maps.Point(16.0, 20.0));
+						var shadow = new google.maps.MarkerImage('/static/images/shadow-mark-monster-32x40.png',
+						    new google.maps.Size(53.0, 40.0),
+					      new google.maps.Point(0, 0),
+					      new google.maps.Point(16.0, 20.0));
+						var shape = {
+						    coord: [1, 1, 1, 20, 18, 20, 18 , 1],
+						    type: 'poly'
+						};
+					  new google.maps.Marker({
+								position: latlon,
+						  	map: map,
+								icon: image,
+								shape: shape,
+								shadow: shadow
+						});
+					}					
+					$('#perception-check').bind('click', function() {
+						$.ajax({
+							type: "POST",
+							url: url,
+							data: {player_key: "{{player.key}}", location: lat+","+lon},
+							dataType: "json",
+							success: function(party) {
+								$('#monsters').html('<h2><img src="/static/images/mark-monster-58x72.png"/>');
+								$('#monsters').append(party.NonPlayerParty.monsters.length +'&nbsp;Monsters spotted!</h2>');
+								$('#monsters').append('<ul>');
+								$.each(party.NonPlayerParty.monsters, function(i,monster) {
+					  	  	$('#monsters').append("<li>"+monster.name+"</li>");  
+					    	});	
+								$('#monsters').append('</ul>');
+								var loc = party.NonPlayerParty.location.split(',');
+								var monster_loc = new google.maps.LatLng(loc[0], loc[1]);
+								setMonsterMarker(map, monster_loc);	
+							},
+						});
+					});					
         };
         var fail = function(e) {
              alert('Can\'t retrieve position.\nError: ' + e);
@@ -21,10 +99,7 @@
         navigator.geolocation.getCurrentPosition(success, fail);				
 			});
 		});
-		$('#perception-check').bind('click', function() {
-			$.getJSON('/mobile/')
-			
-		});
+
 	
 		</script>
 		{% endblock %}
@@ -48,6 +123,8 @@
 			
 		{% block page-id %}
 		<div data-role="page" id="quest">
+			
+			
 		{% endblock %}			
 			
 		{% block header %}
@@ -90,7 +167,11 @@
 				<div id="map-canvas">
 					<img id="map" />
 				</div><!-- /map -->	
-
+				
+				<div id="monsters">
+					
+				</div>
+			
 			</div><!-- /content -->
 			{% endblock %}
 

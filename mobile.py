@@ -89,10 +89,12 @@ class CharacterSheetHandler(BaseHandler):
         _trace = TRACE+'CharacterSheetHandler.get() '
         logging.info(_trace)        
         _character = db.get(key) 
-        player = character.getJSONPlayer(_character)
+        _player = character.getJSONPlayer(_character)
+        _party = _character.party
         user = users.get_current_user()
         template_values = {
-            'player': player,
+            'player': _player,
+            'party': _party,
             'user': user
         }        
         generate(self, 'character_sheet.html', template_values)
@@ -103,6 +105,7 @@ class CharacterQuestHandler(BaseHandler):
         logging.info(_trace)        
         _character = db.get(key) 
         _player = character.getJSONPlayer(_character)
+        party_key = str(_character.party.key())
         user = users.get_current_user()
         
         # Get Pins
@@ -134,6 +137,7 @@ class CharacterQuestHandler(BaseHandler):
             'monsters': simplejson.dumps(monsters_json),
             'battles': simplejson.dumps(battles_json),
             'player': _player,
+            'party_key': party_key,
             'user': user
         }        
         generate(self, 'character_quest.html', template_values)

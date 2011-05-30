@@ -485,6 +485,7 @@ def rollEncounter(player_party, geo_pt):
     monster_loc = spawnLocation(player_party.location)    
     _pin = pin.createMonsterPartyPin(monster_loc, monster_party, entities)
     monster_party.json['pin_key'] = str(_pin.key())
+    monster_party.json['location'] = str(monster_loc)
 
     return monster_party    
 
