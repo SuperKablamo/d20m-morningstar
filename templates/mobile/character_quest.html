@@ -47,7 +47,8 @@
 						  	map: map,
 								icon: image,
 								shape: shape,
-								shadow: shadow
+								shadow: shadow,
+								animation: google.maps.Animation.DROP
 						});
 					}
 					function setMonsterMarker(map, latlon) {
@@ -69,7 +70,8 @@
 						  	map: map,
 								icon: image,
 								shape: shape,
-								shadow: shadow
+								shadow: shadow,
+								animation: google.maps.Animation.DROP
 						});
 					}					
 					$('#perception-check').bind('click', function() {
@@ -79,13 +81,8 @@
 							data: {player_key: "{{player.key}}", location: lat+","+lon},
 							dataType: "json",
 							success: function(party) {
-								$('#monsters').html('<h2><img src="/static/images/mark-monster-58x72.png"/>');
-								$('#monsters').append(party.NonPlayerParty.monsters.length +'&nbsp;Monsters spotted!</h2>');
-								$('#monsters').append('<ul>');
-								$.each(party.NonPlayerParty.monsters, function(i,monster) {
-					  	  	$('#monsters').append("<li>"+monster.name+"</li>");  
-					    	});	
-								$('#monsters').append('</ul>');
+								$('#message').show();
+								$('#monster-parties').append('<a href="/mobile/character/{{player.key}}/attack" data-role="button" data-theme="b" id="{{player.key}}" class="button" data-icon="arrow-r" data-iconpos="right">'+party.NonPlayerParty.description+'</a>');
 								var loc = party.NonPlayerParty.location.split(',');
 								var monster_loc = new google.maps.LatLng(loc[0], loc[1]);
 								setMonsterMarker(map, monster_loc);	
@@ -123,8 +120,6 @@
 			
 		{% block page-id %}
 		<div data-role="page" id="quest">
-			
-			
 		{% endblock %}			
 			
 		{% block header %}
@@ -132,52 +127,54 @@
 			<h1>{{player.name}}</h1>
 		</div><!-- /header -->			
 		{% endblock %}
-			
-			
+						
 			{% block content %}
 			<div data-role="content" id="content">	
-				<table summary="This table contains player stats.">
-					<tbody>
-						<tr>	
-							<th>hp</th>
-							<td>{{player.hit_points.hp}}</td>
-							<th>xp</th>
-							<td>{{player.experience}}</td>
-							<th>gp</th>
-							<td>{{player.purse.gold}}</td>
-						</tr>					
-					</tbody>	
-				</table>	
 				
-				<table summary="This table contains player powers.">
-					<tbody>
-						{% for a in player.powers.attacks %}
-						<tr>
-							<td>{{a.name}}</td>
-							<td>{{a.attack_mod}}</td>
-							<th>dmg</th>
-							<td>{{a.damage_dice}}d{{a.damage_die}}</td>
-							<th>recharge</th>
-							<td>{{a.recharge}}</td>
-						</tr>	
-						{% endfor %}
-					</tbody>
-				</table>	
+				<div id="stats">
+					<table summary="This table contains player stats.">
+						<tbody>
+							<tr>	
+								<th>hp</th>
+								<td>{{player.hit_points.hp}}</td>
+								<th>xp</th>
+								<td>{{player.experience}}</td>
+								<th>gp</th>
+								<td>{{player.purse.gold}}</td>
+							</tr>					
+						</tbody>	
+					</table>	
+				
+					<table summary="This table contains player powers.">
+						<tbody>
+							{% for a in player.powers.attacks %}
+							<tr>
+								<td>{{a.name}}</td>
+								<td>{{a.attack_mod}}</td>
+								<th>dmg</th>
+								<td>{{a.damage_dice}}d{{a.damage_die}}</td>
+								<th>recharge</th>
+								<td>{{a.recharge}}</td>
+							</tr>	
+							{% endfor %}
+						</tbody>
+					</table>	
+				</div>	
 
 				<div id="map-canvas">
 					<img id="map" />
 				</div><!-- /map -->	
 				
-				<div id="monsters">
-					
+				<div id="monster-parties">
+					<h2 id="message">Monsters Spotted!</h2>
 				</div>
 			
 			</div><!-- /content -->
 			{% endblock %}
 
-			{% block footer %}
-			<div data-role="footer" data-theme="d" data-position="fixed" id="footer">
-				<a href="#" data-role="button" data-theme="b" id="perception-check" class="button">PERCEPTION CHECK</a>
-			</div><!-- /footer -->			
-			{% endblock %}			
+		{% block footer %}
+		<div data-role="footer" data-theme="d" data-position="fixed" id="footer">
+			<a href="#" data-role="button" data-theme="b" id="perception-check" class="button">PERCEPTION CHECK</a>
+		</div><!-- /footer -->			
+		{% endblock %}			
 

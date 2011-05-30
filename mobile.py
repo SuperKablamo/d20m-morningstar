@@ -107,35 +107,8 @@ class CharacterQuestHandler(BaseHandler):
         _player = character.getJSONPlayer(_character)
         party_key = str(_character.party.key())
         user = users.get_current_user()
-        
-        # Get Pins
-        battles = models.BattlePin.all().fetch(100)
-        monsters = models.MonsterPartyPin.all().fetch(100)
-        players = models.PlayerPartyPin.all().fetch(100) 
-        battles_json = []
-        monsters_json = []
-        players_json = []
-        for b in battles:
-            lat, lon = utils.parseGeoPt(b.location)
-            data = {'name': b.name,'lat': lat,'lon': lon}
-            battles_json.append(data)
-        for m in monsters:
-            lat, lon = utils.parseGeoPt(m.location)
-            data = {'name': m.name,'lat': lat,'lon': lon}
-            monsters_json.append(data)  
-        for p in players:
-            lat, lon = utils.parseGeoPt(p.location)
-            data = {'name': p.name,'lat': lat,'lon': lon}
-            players_json.append(data)
               
-        logging.info(_trace+'battles = '+simplejson.dumps(battles_json))
-        logging.info(_trace+'monsters = '+simplejson.dumps(monsters_json))
-        logging.info(_trace+'players = '+simplejson.dumps(players_json))
-        
         template_values = {
-            'players': simplejson.dumps(players_json),
-            'monsters': simplejson.dumps(monsters_json),
-            'battles': simplejson.dumps(battles_json),
             'player': _player,
             'party_key': party_key,
             'user': user

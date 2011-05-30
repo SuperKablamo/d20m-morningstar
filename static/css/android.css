@@ -4,9 +4,15 @@
 * info@superkablamo.com
 * 
 *****************************************************************************/
-#content { clear:both; text-align:center; margin:4px 20px; }
-#map-canvas { height:140px; width:320px; margin:10px; border:6px solid #ccc; }
+#content { clear:both; margin:10px auto; }
 
+#stats { margin:10px 0; }
+#map-canvas { height:140px; width:360px; border:6px solid #ccc; }
+.button { max-width:360px; }
+#monster-parties { }
+#monster-parties h2 { visibility:hidden; background:url("/static/images/mark-monster-32x40.png") no-repeat left center; padding:20px 0 0 40px; font-size:1.4em; height:40px; width:260px; }
 
 #footer { text-align:center;padding:10px; }
 #footer .button { width:50%; }
+
+
