@@ -75,7 +75,8 @@ def seedAttacks():
 def getJSONPower(model_name, model):
     json = {'name': model.name, 'description': model.description, 
             'recharge': model.recharge, 'level': model.level, 
-            'source_keyword': model.source_keyword, 'casts': model.casts}
+            'source_keyword': model.source_keyword, 'casts': model.casts,
+            'key': str(model.key())}
 
     # Construct JSON specific to the subclass        
     if model_name == models.ATT:

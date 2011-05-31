@@ -141,7 +141,7 @@ def getJSONItem(model_name, model):
             'casts': model.casts, 'weight': model.weight, 
             'magic': model.magic, 
             'ability_mod_type': model.ability_mod_type,
-            'ability_mod': model.ability_mod}
+            'ability_mod': model.ability_mod, 'key': str(model.key())}
             
     if model.power is not None:
         json['power'] = model.power.name        

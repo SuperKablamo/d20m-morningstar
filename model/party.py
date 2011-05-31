@@ -20,7 +20,9 @@ from utils import roll
 
 ############################# GAE IMPORTS ####################################
 ##############################################################################
+import character
 import logging
+import monster
 import time
 
 from google.appengine.ext import db
@@ -38,18 +40,20 @@ def getJSONParty(party):
 
     if party.class_name() == 'PlayerParty':
         json['leader'] = str(party.leader.key())
-        members = []
-        for m in party.players:
-            members.append(str(m))
-        json['players'] = str(players)
+        players_json = []
+        players = db.get(party.players)
+        for j in players:
+            players_json.append(character.getJSONPlayer(j))
+        json['players'] = players_json
 
     if party.class_name() == 'NonPlayerParty':
         if party.owner:
             json['owner'] = str(party.owner.nickname())
-        monsters = []    
-        for m in party.monsters:
-            monsters.append(str(m))
-        json['monsters'] = str(monsters)      
+        monsters_json = []    
+        monsters = db.get(party.monsters)
+        for m in monsters:
+            monsters_json.append(monster.getJSONMonster(m))
+        json['monsters'] = monsters_json      
        
     return json
     

@@ -127,7 +127,8 @@ class CharacterAttackHandler(BaseHandler):
         _trace = TRACE+'CharacterAttackHandler.get() '
         logging.info(_trace)        
         _character = db.get(player_key) 
-        monster_party = db.get(monster_party_key)
+        _party = db.get(monster_party_key)
+        monster_party = party.getJSONParty(_party)
         _player = character.getJSONPlayer(_character)        
         party_key = str(_character.party.key())
         user = users.get_current_user()

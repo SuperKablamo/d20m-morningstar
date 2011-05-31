@@ -7,14 +7,16 @@
 		{% endblock %}
 		
 		<meta name="viewport" content="width=device-width; height=device-height; user-scalable=no" />
-		<link rel="stylesheet" href="http://code.jquery.com/mobile/1.0a4.1/jquery.mobile-1.0a4.1.min.css" />
 		<link rel="stylesheet" href="/static/css/android.css" />
+		<link rel="stylesheet" href="http://code.jquery.com/mobile/1.0a4.1/jquery.mobile-1.0a4.1.min.css" />
+
 				
 		{% block styles %}
 		{% endblock %}
 		
 		<script src="https://www.google.com/jsapi?key=ABQIAAAApPeof0WyN6ORT7NeNop5OxQhS8mdepxW5-6qUjpskYmhafYcLRQjyW8D0bRdsydbD1maEkV9aSDKrw" type="text/javascript"></script>
-		
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.js"></script>
+				
 		<!-- Loaded before jQuery Mobile -->
 		{% block script %}
 		{% endblock %}
@@ -28,7 +30,7 @@
 	<body>
 
 		{% block page-id %}
-		<div data-role="page" id="main">
+		<div data-role="page" id="main" data-theme="c">
 		{% endblock %}
 			
 			{% block header %}
