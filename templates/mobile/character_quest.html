@@ -82,11 +82,14 @@
 							dataType: "json",
 							success: function(party) {
 								$('#message').show();
-								$('#monster-parties').append('<a href="/mobile/character/{{player.key}}/attack" data-role="button" data-theme="b" id="{{player.key}}" class="button" data-icon="arrow-r" data-iconpos="right">'+party.NonPlayerParty.description+'</a>');
+								$('#monster-party-list').append('<li><a href="/mobile/character/{{player.key}}/attack/'+party.NonPlayerParty.key+'">'+party.NonPlayerParty.label+'</a></li>');
 								var loc = party.NonPlayerParty.location.split(',');
 								var monster_loc = new google.maps.LatLng(loc[0], loc[1]);
 								setMonsterMarker(map, monster_loc);	
 							},
+							complete: function() { 
+								$('ul').listview('refresh') 
+							}
 						});
 					});					
         };
@@ -166,7 +169,10 @@
 				</div><!-- /map -->	
 				
 				<div id="monster-parties">
-					<h2 id="message">Monsters Spotted!</h2>
+
+					<ul id="monster-party-list" data-role="listview" data-theme="b">
+						<li id="message" data-role="list-divider" role="heading">Monsters Spotted!</li>	
+					</ul>
 				</div>
 			
 			</div><!-- /content -->

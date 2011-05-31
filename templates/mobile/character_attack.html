@@ -1,0 +1,87 @@
+{% extends "main.html" %}
+
+		{% block title %}
+		<title>d20morningstar - Character Quest</title> 
+		{% endblock %}
+		
+		{% block script %}
+		<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true&language=en"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.0/jquery.js"></script>
+
+		{% endblock %}
+		
+		{% block jquery-mobile-script %}
+		<script>
+			$(document).ready(function() {
+		  	// disable ajax nav
+		  	$.mobile.ajaxLinksEnabled = false;
+		 	});
+		</script>	
+    
+		<script type="text/javascript">
+    	$(document).bind("mobileinit", function()	{
+      	$.extend($.mobile, {
+          ajaxFormsEnabled: false
+      	});
+    	});
+    </script>		
+		{% endblock %}
+			
+		{% block page-id %}
+		<div data-role="page" id="quest">
+		{% endblock %}			
+			
+		{% block header %}
+		<div data-role="header" data-theme="d">
+			<h1>{{player.name}}</h1>
+		</div><!-- /header -->			
+		{% endblock %}
+						
+			{% block content %}
+			<div data-role="content" id="content">	
+				
+				<div id="stats">
+					<table summary="This table contains player stats.">
+						<tbody>
+							<tr>	
+								<th>hp</th>
+								<td>{{player.hit_points.hp}}</td>
+								<th>xp</th>
+								<td>{{player.experience}}</td>
+								<th>gp</th>
+								<td>{{player.purse.gold}}</td>
+							</tr>					
+						</tbody>	
+					</table>	
+				
+					<table summary="This table contains player powers.">
+						<tbody>
+							{% for a in player.powers.attacks %}
+							<tr>
+								<td>{{a.name}}</td>
+								<td>{{a.attack_mod}}</td>
+								<th>dmg</th>
+								<td>{{a.damage_dice}}d{{a.damage_die}}</td>
+								<th>recharge</th>
+								<td>{{a.recharge}}</td>
+							</tr>	
+							{% endfor %}
+						</tbody>
+					</table>	
+				</div>	
+
+				<div id="monster-parties">
+					<ul id="monster-party-list" data-role="listview" data-theme="b">
+						<li id="message" data-role="list-divider" role="heading">Monsters Spotted!</li>	
+					</ul>
+				</div>
+			
+			</div><!-- /content -->
+			{% endblock %}
+
+		{% block footer %}
+		<div data-role="footer" data-theme="d" data-position="fixed" id="footer">
+			<a href="#" data-role="button" data-theme="b" id="perception-check" class="button">ATTACK!</a>
+		</div><!-- /footer -->			
+		{% endblock %}			
+

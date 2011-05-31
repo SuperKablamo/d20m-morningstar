@@ -276,6 +276,7 @@ def rollEncounter(player_party, geo_pt):
         ###
         
         entities = []    
+        label = None
         ######################################################################
         # Minions Minions Minions!
         if r == 1 or r == 2:
@@ -320,6 +321,11 @@ def rollEncounter(player_party, geo_pt):
                 m = monster.createMonsterFromTemplate(npc)
                 monster_party.monsters.append(m.key())
                 entities.append(m)
+                
+            label = str(npc_party_size) + ' ' + entities[0].name
+            if npc_party_size > 1:
+                label += 's'
+
                 
         ######################################################################
         # There's one for everyone.                
@@ -486,6 +492,7 @@ def rollEncounter(player_party, geo_pt):
     _pin = pin.createMonsterPartyPin(monster_loc, monster_party, entities)
     monster_party.json['pin_key'] = str(_pin.key())
     monster_party.json['location'] = str(monster_loc)
+    monster_party.json['label'] = label
 
     return monster_party    
 
@@ -501,30 +508,46 @@ def spawnLocation(location, meters=60):
     _trace=TRACE+"spawnLocation() "
     logging.info(_trace)
     lat, lon = utils.parseGeoPt(location)
+    logging.info(_trace+'lat = '+lat)
+    logging.info(_trace+'lon = '+lon)
     
     # Randomly determine distance of new lat/lon
     ran_lat_meters = utils.roll(meters, 1)
     ran_lon_meters = utils.roll(meters, 1)
+    logging.info(_trace+'ran_lat_meters = '+str(ran_lat_meters))
+    logging.info(_trace+'ran_lon_meters = '+str(ran_lon_meters))
+        
     lat_meters = ran_lat_meters*.00001
     lon_meters = ran_lon_meters*.00001
+    logging.info(_trace+'lat_meters = '+str(lat_meters))
+    logging.info(_trace+'lon_meters = '+str(lon_meters))
 
     # Randomly determine direction of new lat/lon
     pos_lat_vector = random.choice([True, False])
     pos_lon_vector = random.choice([True, False])
+    logging.info(_trace+'pos_lat_vector = '+str(pos_lat_vector))
+    logging.info(_trace+'pos_lon_vector = '+str(pos_lon_vector))
+        
     lat = utils.strToIntOrFloat(lat)
     lon = utils.strToIntOrFloat(lon)
     new_lat = lat
     new_lon = lon
     if pos_lat_vector == False:
         new_lat = lat - lat_meters  
+        logging.info(_trace+'False new_lat = '+str(new_lat))
+    
     else:
         new_lat = lat + lat_meters              
-
+        logging.info(_trace+'True new_lat = '+str(new_lat))
+        
     if pos_lon_vector == False:
         new_lon = lon - lon_meters
+        logging.info(_trace+'False new_lon = '+str(new_lon))    
+    
     else:
-        new_lat = lat + lat_meters
-                
+        new_lon = lon + lon_meters
+        logging.info(_trace+'True new_lon = '+str(new_lon))
+                        
     new_location = db.GeoPt(str(new_lat), str(new_lon))
     return new_location
 

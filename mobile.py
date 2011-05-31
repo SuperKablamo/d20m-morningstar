@@ -121,6 +121,31 @@ class CharacterQuestHandler(BaseHandler):
         logging.info(_trace+'key = '+key)
         #return {'foo': 123}
         self.redirect('/mobile/character/'+key+'/quest')
+
+class CharacterAttackHandler(BaseHandler):
+    def get(self, player_key, monster_party_key):
+        _trace = TRACE+'CharacterAttackHandler.get() '
+        logging.info(_trace)        
+        _character = db.get(player_key) 
+        monster_party = db.get(monster_party_key)
+        _player = character.getJSONPlayer(_character)        
+        party_key = str(_character.party.key())
+        user = users.get_current_user()
+              
+        template_values = {
+            'player': _player,
+            'monster_party': monster_party,
+            'party_key': party_key,
+            'user': user
+        }        
+        generate(self, 'character_attack.html', template_values)
+
+    def post(self, key):
+        _trace = TRACE+'CharacterQuestHandler.post() '
+        logging.info(_trace)
+        logging.info(_trace+'key = '+key)
+        #return {'foo': 123}
+        self.redirect('/mobile/character/'+key+'/quest')        
         
 ######################## METHODS #############################################
 ##############################################################################
@@ -139,6 +164,8 @@ application = webapp.WSGIApplication([('/mobile/character/create',
                                        CharacterHandler),
                                       (r'/mobile/character/(.*)/quest', 
                                        CharacterQuestHandler),
+                                      (r'/mobile/character/(.*)/attack/(.*)', 
+                                       CharacterAttackHandler),                                       
                                       (r'/mobile/character/(.*)', 
                                        CharacterSheetHandler),
                                       (r'/mobile/.*', 
