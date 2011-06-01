@@ -70,7 +70,7 @@ SOL = 'Soldier'
 STAN = 'Standard'
 ELIT = 'Elite'
 SOLO = 'Solo'
-LEAD = 'Leader'       
+LEAD = 'Leader'   
      
 ############################# CUSTOM PROPERTIES ##############################
 ##############################################################################   
@@ -126,6 +126,7 @@ class PlayerCharacter(Character):
 
 class Player(PlayerCharacter):
     user = db.UserProperty(required=True)
+    status = db.StringProperty(required=True, default='Active')
     @property
     def party(self):
         return PlayerParty.all().filter('players', self.key()).get()
@@ -150,6 +151,7 @@ class NonPlayerCharacterTemplate(NonPlayerCharacter):
     
 class Monster(NonPlayerCharacter): 
     user = db.UserProperty(required=False)
+    status = db.StringProperty(required=True, default='Active')    
     @property
     def parties(self):
         return NonPlayerParty.all().filter('monsters', self.key())
@@ -214,9 +216,9 @@ class Attack(Power):
     attack_mod = db.IntegerProperty(required=True, default=0) # Attack bonus
     defense_ability = db.StringProperty(required=True) # Defender ability
     damage_weapon_multiplier = db.IntegerProperty(required=False, default=0) # Damage multiplier for weapon used
-    damage_ability_mod = db.StringProperty(required=False) # Type of damage die to roll
+    damage_ability_mod = db.StringProperty(required=False) 
     damage_dice = db.IntegerProperty(required=False, default=0) # Number of damage dice to roll
-    damage_die = db.IntegerProperty(required=False, default=0)
+    damage_die = db.IntegerProperty(required=False, default=0) # Type of damage die to roll
     effect = db.StringProperty(required=False)
     max_targets = db.IntegerProperty(required=True, default=1)
     max_attacks = db.IntegerProperty(required=True, default=1)
@@ -270,8 +272,6 @@ class Weapon(Item):
     damage_mod = db.IntegerProperty(required=False)
     critical_damage_die = db.IntegerProperty(required=False)
     critical_damage_dice = db.IntegerProperty(required=False)    
-    defense_mod_type = db.StringProperty(required=False)
-    defense_mod = db.IntegerProperty(required=False)
     implement = db.BooleanProperty(required=True, default=False)  
     
 class Armor(Item):

@@ -13,9 +13,11 @@ import models
 import utils
 
 from model import character
+from model import item
 from model import loot
 from model import monster
 from model import pin
+from model import power
 from settings import *
 
 ############################# GAE IMPORTS ####################################
@@ -43,12 +45,15 @@ def attackMonster(attacker, attack, monster):
     _trace = TRACE+'rollAttack():: '
     logging.info(_trace)
     damage_keywords = attack.damage_keywords
-    json = {'monster': str(monster.key()),'damage': 0, 'keywords': damage_keywords, 'status': 'Hit'}
+    json = {'key': str(monster.key()), 'name': monster.name,
+            'damage': 0, 'keywords': damage_keywords, 
+            'status': 'Hit', 'hp': 0}
     
     # Roll Attack, natural 20 is a Hit
-    attack_roll = utils.roll(20, 1)    
+    #attack_roll = utils.roll(20, 1)  
+    attack_roll = 19  # FOR TESTING
     
-    if attack.class_name() == 'Weapon':
+    if attack.class_name() == models.WPN:
         # get attack mod using proficiency and ability
         # if magic, add bonus
         # get defense value
@@ -57,16 +62,19 @@ def attackMonster(attacker, attack, monster):
         # assign damage
         # if magic, check for keywords
         
+        json_weapon = item.getJSONItem(models.WPN, attack)
         logging.info(_trace+'Attack = Item.Weapon')
+        logging.info(_trace+'Weapon = '+str(json_weapon))
         if attack.magic == True: pass
         else: pass
-                
-        mod_attack_roll = attack_roll + attack.attack_mod
+
         logging.info(_trace+'attack_roll = '+str(attack_roll))
-        logging.info(_trace+'mod_attack_roll = '+str(mod_attack_roll))
-    
+        logging.info(_trace+'attack_mod = '+str(attack.attack_mod))
+        mod_attack_roll = attack_roll + attack.attack_mod
+        logging.info(_trace+'mod_attack_roll = '+str(mod_attack_roll))    
+            
         # Get Defense Score
-        defense = attack.defense_ability
+        defense = 'AC'
         defense_score = monster.scores['defenses'][defense]['score']
         logging.info(_trace+'defense_score = '+str(defense_score))     
     
@@ -80,13 +88,13 @@ def attackMonster(attacker, attack, monster):
             logging.info(_trace+'Attack is a Hit!')
             damage_dice = attack.damage_dice 
             damage_die = attack.damage_die
-            ability = attack.damage_ability_mod
             damage = 0
             if damage_die != 0:
                 damage = utils.roll(damage_die, damage_dice)
-            ability_mod = attacker.scores['abilities'][ability]['mod']
-            damage += ability_mod
-            logging.info(_trace+'unmodified damage = '+str(damage))
+            if attack.ability_mod_type:
+                ability_mod = attacker.scores['abilities'][ability]['mod']
+                damage += ability_mod
+            logging.info(_trace+'damage before defenses = '+str(damage))
     
             # Calculate Defenses
             immunities = monster.immunities
@@ -118,7 +126,16 @@ def attackMonster(attacker, attack, monster):
                 if damage < 0:
                     damage = 0    
     
-                json['damage'] = damage        
+            hp = monster.hit_points['hp']
+            hp -= damage
+            if hp < 0:
+                hp = 0
+                monster.status = "Killed"
+            
+            monster.hit_points['hp'] = 0
+                    
+            json['hp'] = hp
+            json['damage'] = damage     
                 
     elif attack.class_name() == 'Attack':    
         logging.info(_trace+'Attack = Power.Attack')

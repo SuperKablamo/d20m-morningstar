@@ -4,16 +4,16 @@
 		<title>d20morningstar - Character Sheet</title> 
 		{% endblock %}
 
-		{% block header %}
-		<div data-role="header" data-theme="a">
-			<h1>{{player.name}}</h1>
-		</div><!-- /header -->			
-		{% endblock %}
-			
 		{% block page-id %}
 		<div data-role="page" id="sheet">
 		{% endblock %}
 			
+			{% block header %}
+			<div data-role="header" data-theme="a">
+				<h1>{{player.name}}</h1>
+			</div><!-- /header -->			
+			{% endblock %}
+		
 			{% block content %}
 			<div data-role="content" id="content">	
 				<table summary="This table contains player stats.">

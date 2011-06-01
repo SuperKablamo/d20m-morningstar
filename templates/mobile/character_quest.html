@@ -121,14 +121,14 @@
 		{% endblock %}
 			
 		{% block page-id %}
-		<div data-role="page" id="quest" data-theme="c">
-		{% endblock %}			
-			
-		{% block header %}
-		<div data-role="header" data-theme="a">
-			<h1>{{player.name}}</h1>
-		</div><!-- /header -->			
+		<div data-role="page" id="quest">
 		{% endblock %}
+			
+			{% block header %}
+			<div data-role="header" data-theme="a">
+				<h1>{{player.name}}</h1>
+			</div><!-- /header -->			
+			{% endblock %}
 						
 			{% block content %}
 			<div data-role="content" id="content">	

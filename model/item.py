@@ -49,22 +49,16 @@ def seedWeapons():
         else: implement = None
         if 'attack_mod' in keys: 
             attack_mod = x['attack_mod']
-        else: attack_mod = None
+        else: attack_mod = 0
         if 'damage_mod' in keys: 
             damage_mod = x['damage_mod']
-        else: damage_mod = None
+        else: damage_mod = 0
         if 'critical_damage_die' in keys: 
             critical_damage_die = x['critical_damage_die']
-        else: critical_damage_die = None
+        else: critical_damage_die = 0
         if 'critical_damage_dice' in keys: 
             critical_damage_dice = x['critical_damage_dice']
-        else: critical_damage_dice = None
-        if 'defense_mod_type' in keys: 
-            defense_mod_type = x['defense_mod_type']
-        else: defense_mod_type = None
-        if 'defense_mod' in keys: 
-            defense_mod = x['defense_mod']
-        else: defense_mod = None
+        else: critical_damage_dice = 0
                                              
         weapon = models.Weapon(key_name = x['name'],
                                proficiency = x['proficiency'],        
@@ -84,9 +78,7 @@ def seedWeapons():
                                attack_mod = attack_mod,
                                damage_mod = damage_mod,
                                critical_damage_die = critical_damage_die,
-                               critical_damage_dice = critical_damage_dice,
-                               defense_mod_type = defense_mod_type,
-                               defense_mod = defense_mod)          
+                               critical_damage_dice = critical_damage_dice)          
         
         weapon.json = getJSONItem(models.WPN, weapon)
         weapons.append(weapon)
@@ -113,7 +105,7 @@ def seedArmor():
         else: defense_mod_type = None
         if 'defense_mod' in keys: 
             defense_mod = x['defense_mod']
-        else: defense_mod = None
+        else: defense_mod = 0
         
         armor = models.Armor(key_name = x['name'],        
                              name = x['name'],
@@ -158,8 +150,6 @@ def getJSONItem(model_name, model):
         json['damage_mod'] = model.damage_mod
         json['critical_damage_die'] = model.critical_damage_die
         json['critical_damage_dice'] = model.critical_damage_dice
-        json['defense_mod_type'] = model.defense_mod_type
-        json['defense_mod'] = model.defense_mod
         json['implement'] = model.implement                              
         
     elif model_name == models.ARM:

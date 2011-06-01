@@ -392,12 +392,14 @@ class APIPartyActions(APIBase):
             #Character attacks character(s) in Party Z using Item or Power      
             if action == 'attack':
                 player_key = self.request.get('player_key')
-                monster_keys = self.request.get_all('monsters')
-                weapon_key = self.request.get('weapon_key')
+                monster_keys = self.request.get_all('monster')
                 attack_key = self.request.get('attack_key')
                 location = self.request.get('location')
-                missing = utils.findMissingParams(self, 'player_key', 
-                                                  'monster_keys', 'location')
+                missing = utils.findMissingParams(self, 
+                                                  'player_key', 
+                                                  'monster_keys',
+                                                  'attack_key',                                                  
+                                                  'location')
 
                 if missing is not None:
                     r = API400
@@ -412,29 +414,14 @@ class APIPartyActions(APIBase):
                 
                 # Both Power.Attack and Item.Weapon are considered an 'attack'
                 
-                # Get Power-Attack
-                if len(attack_key) != 0:
-                    logging.info(_trace+'getting Attack!')
-                    attack = db.get(attack_key)                    
-                    if attack is None or attack.class_name() != 'Attack':
-                        r = API404
-                        r[MSG] = 'Power not found for attack_key '+attack_key+' .'                            
-                        return self.response.out.write(simplejson.dumps(r))
-                
-                # Get Item-Weapon        
-                elif len(weapon_key) != 0:
-                    logging.info(_trace+'getting Weapon!')
-                    attack = db.get(weapon_key) 
-                    if attack is None or attack.class_name() != 'Weapon':
-                        r = API404
-                        r[MSG] = 'Item not found for weapon_key '+attack_key+' .'                            
-                        return self.response.out.write(simplejson.dumps(r))                                   
-                
-                # Get nothing - return Error
-                else:
+                # Get Power-Attack or Item-Weapon from attack_key
+                logging.info(_trace+'getting Attack!')
+                attack = db.get(attack_key)             
+                class_name = attack.class_name()
+                if class_name != 'Attack' and class_name != 'Weapon':
                     r = API404
-                    r[MSG] = 'Missing parameter \'attack_key\' or \'power_key\'.'                            
-                    return self.response.out.write(simplejson.dumps(r))                            
+                    r[MSG] = 'Power or Item not found for attack_key '+attack_key+' .'                            
+                    return self.response.out.write(simplejson.dumps(r))
                 
                 # Get Monsters  
                 monsters = db.get(monster_keys)
@@ -450,7 +437,7 @@ class APIPartyActions(APIBase):
                 
                 r = API200
                 r[MSG] = 'Smite thy enemies!'
-                r['damage'] = damage                                                                             
+                r['monsters'] = damage                                                                             
                     
             # Character checkins in at a location seeking Parties, Traps or
             # Events.
@@ -495,7 +482,7 @@ class APIPartyActions(APIBase):
         else:
             r = API404
             r[MSG] = 'Party not found for key '+key+' .'
-                    
+          
         return self.response.out.write(simplejson.dumps(r)) 
 
 ######################## METHODS #############################################

@@ -32,37 +32,33 @@
 		{% endblock %}
 
 		{% block page-id %}
-		<div data-role="page" id="create" data-theme="a">
-		{% endblock %}
-			
-		{% block header %}
-		<div data-role="header" data-theme="a">
-			<h1>Create</h1>
-		</div><!-- /header -->			
-		{% endblock %}
-
-		{% block page-id %}
 		<div data-role="page" id="create">
-		{% endblock %}			
-			
-		{% block content %}
-		<div data-role="content" id="content">	
-			<h2>Create new character:</h2>
-			<div data-role="fieldcontain" id="templates">
-				<form method="post">
-			  	<fieldset data-role="controlgroup">
-						<input type="hidden" id="lat" name="lat" value=""/>
-						<input type="hidden" id="lon" name="lon" value=""/>						
-						<label for="name">Name:</label>
-						<input type="text" name="name" id="name" value=""  /><br/>			<br/>		
-						<label for="name">Build:</label>						
-						{% for t in templates %}
-				    <input type="radio" name="template" id="{{t.key}}" value="{{t.key}}" />
-				    <label for="{{t.key}}">{{t.name}}</label>
-						{% endfor %}
-						<button value="submit-value" name="submit" data-theme="b" type="submit" class="ui-btn-hidden" aria-disabled="false">Submit</button>
-				  </fieldset>
-				</form>
-			</div><!-- /templates -->				
-		</div><!-- /content -->
 		{% endblock %}
+			
+			{% block header %}
+			<div data-role="header" data-theme="a">
+				<h1>Create</h1>
+			</div><!-- /header -->			
+			{% endblock %}		
+			
+			{% block content %}
+			<div data-role="content" id="content">	
+				<h2>Create new character:</h2>
+				<div data-role="fieldcontain" id="templates">
+					<form method="post">
+			  		<fieldset data-role="controlgroup">
+							<input type="hidden" id="lat" name="lat" value=""/>
+							<input type="hidden" id="lon" name="lon" value=""/>						
+							<label for="name">Name:</label>
+							<input type="text" name="name" id="name" value=""  /><br/>			<br/>		
+							<label for="name">Build:</label>						
+							{% for t in templates %}
+				    	<input type="radio" name="template" id="{{t.key}}" value="{{t.key}}" />
+				    	<label for="{{t.key}}">{{t.name}}</label>
+							{% endfor %}
+							<button value="submit-value" name="submit" data-theme="b" type="submit" class="ui-btn-hidden" aria-disabled="false">Submit</button>
+				  	</fieldset>
+					</form>
+				</div><!-- /templates -->				
+			</div><!-- /content -->
+			{% endblock %}
