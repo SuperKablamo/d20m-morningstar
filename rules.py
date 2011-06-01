@@ -47,7 +47,7 @@ def attackMonster(attacker, attack, monster):
     damage_keywords = attack.damage_keywords
     json = {'key': str(monster.key()), 'name': monster.name,
             'damage': 0, 'keywords': damage_keywords, 
-            'status': 'Hit', 'hp': 0}
+            'status': 'Hit', 'hp': 0, 'xp': monster.experience}
     
     # Roll Attack, natural 20 is a Hit
     #attack_roll = utils.roll(20, 1)  

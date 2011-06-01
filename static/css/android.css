@@ -15,3 +15,6 @@
 #footer { text-align:center;padding:10px; }
 #footer .button { width:50%; }
 
+/* JQM Styles */
+.min-width-480px .ui-field-contain { padding:0; }
+

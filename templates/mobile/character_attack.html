@@ -13,9 +13,9 @@
         var success = function(position) {   
 					$('label').find('.ui-btn-text').append('<span class="damage-message"></span>')
 					var coords = position.coords;
-					var lat = coords.latitude
-					var lon =coords.longitude
-					
+					var lat = coords.latitude;
+					var lon = coords.longitude;
+					var player_xp = {{player.experience}};
 					$('input[name="location"]').val(lat+","+lon);
 					$('#attack-action').bind('click', function() {
 						var attack_data = $('#attack-form').serialize();
@@ -25,11 +25,20 @@
 							data: attack_data,
 							dataType: "json",
 							success: function(resp) {
+								
 								$.each(resp.monsters, function(i,monster) {
 								  if (monster.hp == 0) {
 									 	var key = monster.key;
-										$("'label[for="+key+"]'").remove();
-									  $('#deathrow').find('ul').append('<li>'+monster.name+'</li>');
+									  var mxp = monster.xp;
+										player_xp += mxp;
+										$("'label[for="+key+"]'").parent().remove();
+									  $('#deathrow').find('ul').append('<li class="ui-li ui-li-static ui-body-c">'+monster.name+'&nbsp;&nbsp;&#43;&nbsp;&nbsp;'+mxp+'&nbsp;xp</li>').page();
+										$('#deathrow').find('h2').html('Deadpool');
+										$('#xp').html(player_xp);
+										if (!$('input[name="monster"]').length) {
+											$('#targets').remove();
+											$('#attack-action').remove();
+										}
 									} 
 									else if (damage.status == 'Hit') {
 										var key = monster.key;
@@ -38,14 +47,10 @@
 									else if (monster.status == 'Miss') {
 									  $("'label[for="+id+"]'").find('.damage-message').html(monster.status);									
 									}		
-									$("input[type='radio']").checkboxradio("refresh"); 								
 					    	});
-							},
-							complete: function() { 
-
 							}
 						});
-					});					
+					});
         };
         var fail = function(e) {
              alert('Can\'t retrieve position.\nError: ' + e);
@@ -74,11 +79,11 @@
 						<tbody>
 							<tr>	
 								<th>hp</th>
-								<td>{{player.hit_points.hp}}</td>
+								<td id="hp">{{player.hit_points.hp}}</td>
 								<th>xp</th>
-								<td>{{player.experience}}</td>
+								<td id="xp">{{player.experience}}</td>
 								<th>gp</th>
-								<td>{{player.purse.gold}}</td>
+								<td id="gp">{{player.purse.gold}}</td>
 							</tr>					
 						</tbody>	
 					</table>	
@@ -88,7 +93,7 @@
 					<input type="hidden" name="player_key" value="{{player.key}}" />
 					<input type="hidden" name="location" value="{{player.key}}" />
 					
-					<div data-role="fieldcontain">
+					<div data-role="fieldcontain" id="attacks">
 						<h2>Choose an Attack</h2>
 	    			<fieldset data-role="controlgroup">
 							{% for w in player.items.weapons %}		
@@ -106,7 +111,7 @@
     				</fieldset>
 					</div>
 				
-					<div data-role="fieldcontain">
+					<div data-role="fieldcontain" id="targets">
 						<h2>Choose a Target</h2>
 	    			<fieldset data-role="controlgroup">
 							{% for m in monster_party.monsters %}		
@@ -122,11 +127,8 @@
 				</form>
 				
 				<div id="deathrow">
-					<h2>Killed</h2>
-					<ul data-inset="true" data-role="listview">
-						<li>Kobold Minions</li>
-						<li>Kobold Minions</li>
-						
+					<h2></h2>
+					<ul data-inset="false" data-role="listview">
 					</ul>	
 				</div>	
 			
