@@ -24,8 +24,7 @@
 							url: url,
 							data: attack_data,
 							dataType: "json",
-							success: function(resp) {
-								
+							success: function(resp) {								
 								$.each(resp.monsters, function(i,monster) {
 								  if (monster.hp == 0) {
 									 	var key = monster.key;
@@ -37,7 +36,8 @@
 										$('#xp').html(player_xp);
 										if (!$('input[name="monster"]').length) {
 											$('#targets').remove();
-											$('#attack-action').remove();
+											$('#footer').find('a').attr('id', 'loot-action');
+											$('#footer').find('.ui-btn-text').html('LOOT!');
 										}
 									} 
 									else if (damage.status == 'Hit') {
@@ -48,7 +48,10 @@
 									  $("'label[for="+id+"]'").find('.damage-message').html(monster.status);									
 									}		
 					    	});
-							}
+								if ($("input[name=rmode]:radio:checked").attr('class') == 'recharge') {
+									alert("WORKS!");
+								}
+							}							
 						});
 					});
         };
@@ -59,6 +62,9 @@
 			});
 		});
 		</script>		
+
+
+
 		{% endblock %}
 		
 		{% block page-id %}
@@ -91,8 +97,9 @@
 				
 				<form id="attack-form">
 					<input type="hidden" name="player_key" value="{{player.key}}" />
-					<input type="hidden" name="location" value="{{player.key}}" />
-					
+					<input type="hidden" name="location" value="" />
+					<input type="hidden" name="monster_party_key" value="{{monster_party.key}}" />
+										
 					<div data-role="fieldcontain" id="attacks">
 						<h2>Choose an Attack</h2>
 	    			<fieldset data-role="controlgroup">
@@ -102,18 +109,36 @@
 									checked="checked" 
 								{% endif %} 
 							/>
-         			<label for="{{w.key}}">{{w.name}}</label>
+         			<label for="{{w.key}}">
+								{{w.name}}&nbsp;&nbsp;&#43;{{w.proficiency}}&nbsp;&nbsp;&nbsp;&nbsp;
+								<span class="key">dmg</span>
+								{{w.damage_dice}}d{{w.damage_die}}</label>
 							{% endfor %}	
+							
 							{% for a in player.powers.attacks %}		
 	         		<input type="radio" name="attack_key" id="{{a.key}}" value="{{a.key}}" />
-	         		<label for="{{a.key}}">{{a.name}}</label>
+	         		<label for="{{a.key}}">{{a.name}}&nbsp;&nbsp;
+								{% if a.attack_mod %}
+								  {{a.attack_ability}}&#43;{{a.attack_mod}}&nbsp;&nbsp;
+								{% endif %}
+								<span class="key">&nbsp;&nbsp;dmg</span>
+								{% if a.damage_weapon_multiplier %}
+									{{a.damage_weapon_multiplier}}W &nbsp;&nbsp;
+								{% endif %}
+								{% if a.damage_dice %}
+									{{a.damage_dice}}d{{a.damage_die}}
+								{% endif %}
+								<span class="recharge ready" id="{{a.key}}-recharge">ready</span>
+							</label>
 							{% endfor %}
     				</fieldset>
 					</div>
 				
 					<div data-role="fieldcontain" id="targets">
+						{% if monster_party.monsters %}
 						<h2>Choose a Target</h2>
-	    			<fieldset data-role="controlgroup">
+	    			{% endif %}
+						<fieldset data-role="controlgroup">
 							{% for m in monster_party.monsters %}		
          			<input data-theme="c" type="radio" name="monster" id="{{m.key}}" value="{{m.key}}" 
 								{% if forloop.first %}
@@ -127,8 +152,13 @@
 				</form>
 				
 				<div id="deathrow">
-					<h2></h2>
+					<h2>{% if monster_party.deadpool %}Deadpool{% endif %}</h2>
 					<ul data-inset="false" data-role="listview">
+						{% for d in monster_party.deadpool %}
+						<li class="ui-li ui-li-static ui-body-c">
+							{{d.name}}&nbsp;&nbsp;&#43;{{d.experience}}&nbsp;xp
+						</li>
+						{% endfor %}
 					</ul>	
 				</div>	
 			
@@ -137,7 +167,11 @@
 
 		{% block footer %}
 		<div data-role="footer" data-theme="d" data-position="fixed" id="footer">
+			{% if monster_party.monsters %}
 			<a href="#" data-role="button" data-theme="b" id="attack-action" class="button">ATTACK!</a>
+			{% else %}
+			<a href="#" data-role="button" data-theme="b" id="loot-action" class="button">LOOT!</a>
+			{% endif %}
 		</div><!-- /footer -->			
 		{% endblock %}			
 

@@ -62,6 +62,23 @@ def getJSONMonster(monster):
     json['immunities'] = immunities
     return json
 
+def getJSONMonsterLite(monster):
+    '''Returns a Monster as JSON, but only includes basic properties.
+    '''
+    _trace = TRACE + 'getJSONMonster() '
+    logging.info(_trace)
+    logging.info(_trace + 'monster = ' + monster.name)
+    json = {'name': monster.name, 
+            'level': monster.level, 'race': monster.race,
+            'alignment': monster.alignment, 'size': monster.size, 
+            'experience': monster.experience, 'speed': monster.speed,
+            'description': monster.description,
+            'origin': monster.origin, 'category': monster.category,
+            'role': monster.role, 'challenge': monster.challenge}
+
+    logging.info(_trace + 'json = ' + str(json))            
+    return json
+
 def createMonsterFromTemplate(npc_template):
     '''Creates a new Monster from a NonPlayerCharacterTemplate.
     ''' 

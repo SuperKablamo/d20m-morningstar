@@ -49,12 +49,19 @@ def getJSONParty(party):
     if party.class_name() == 'NonPlayerParty':
         if party.owner:
             json['owner'] = str(party.owner.nickname())
+        # Active monsters
         monsters_json = []    
         monsters = db.get(party.monsters)
         for m in monsters:
             monsters_json.append(monster.getJSONMonster(m))
         json['monsters'] = monsters_json      
-       
+        # Dead monsters
+        deadpool_json = []
+        deadpool_monsters = db.get(party.deadpool)
+        for d in deadpool_monsters:
+            deadpool_json.append(monster.getJSONMonster(d))
+        json['deadpool'] = deadpool_json
+               
     return json
     
 def updateJSONParty(party, *characters):
@@ -100,15 +107,20 @@ def getJSONQuest(party, player, geo_loc):
     quest = rules.rollEncounter(party, geo_loc)
     return quest 
 
-def getJSONAttack(party, monsters, attacker, attack):
-    '''Returns the damage inflicted on any monsters.
+def getJSONAttack(monster_party, monsters, attacker, attack):
+    '''Returns results of each monster attacked, and entity List to be 
+    updated.
     '''
-    damage = []
+    json_damage = []
     for m in monsters:
-        result = rules.attackMonster(attacker, attack, m)
-        damage.append(result)
-            
-    return damage    
+        json_result, entities = rules.attackMonster(attacker, attack, m)
+        json_damage.append(json_result)
+        if json_result['hp'] == 0:
+            monster_party.monsters.remove(m.key())
+            monster_party.deadpool.append(m.key())
+            entities.append(monster_party)
+                
+    return json_damage, entities    
     
 ####################### DATA ################################################
 ##############################################################################

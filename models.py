@@ -216,7 +216,7 @@ class Attack(Power):
     attack_mod = db.IntegerProperty(required=True, default=0) # Attack bonus
     defense_ability = db.StringProperty(required=True) # Defender ability
     damage_weapon_multiplier = db.IntegerProperty(required=False, default=0) # Damage multiplier for weapon used
-    damage_ability_mod = db.StringProperty(required=False) 
+    damage_ability_type = db.StringProperty(required=False) 
     damage_dice = db.IntegerProperty(required=False, default=0) # Number of damage dice to roll
     damage_die = db.IntegerProperty(required=False, default=0) # Type of damage die to roll
     effect = db.StringProperty(required=False)
@@ -249,6 +249,7 @@ class Item(polymodel.PolyModel):
     # Inherent Power  
     power = db.ReferenceProperty(required=False) 
     category = db.StringProperty(required=False)
+    # Enhancement to an Ability (eg, type=STR, mod=2) 
     ability_mod_type = db.StringProperty(required=False)
     ability_mod = db.IntegerProperty(required=False)    
     json = JSONProperty(required=True)
@@ -337,7 +338,11 @@ class Party(polymodel.PolyModel): # A party of PCs or NPCs
     updated = db.DateTimeProperty(auto_now=True)
     location = db.GeoPtProperty(required=True)
     log = JSONProperty(required=False)   
-    json = JSONProperty(required=False)        
+    json = JSONProperty(required=False)  
+    # All killed players/monsters
+    deadpool = db.ListProperty(db.Key, required=True, default=None)
+    # Has this Party been looted for treasure?
+    looted = db.BooleanProperty(required=True, default=False)      
 
 class PlayerParty(Party):
     leader = db.ReferenceProperty(PlayerCharacter, required=True)

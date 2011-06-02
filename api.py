@@ -395,11 +395,13 @@ class APIPartyActions(APIBase):
                 monster_keys = self.request.get_all('monster')
                 attack_key = self.request.get('attack_key')
                 location = self.request.get('location')
+                monster_party_key = self.request.get('monster_party_key')
                 missing = utils.findMissingParams(self, 
                                                   'player_key', 
                                                   'monster_keys',
                                                   'attack_key',                                                  
-                                                  'location')
+                                                  'location',
+                                                  'monster_party_key')
 
                 if missing is not None:
                     r = API400
@@ -411,6 +413,13 @@ class APIPartyActions(APIBase):
                     r = API404
                     r[MSG] = 'Player not found for player_key '+player_key+' .'                            
                     return self.response.out.write(simplejson.dumps(r))   
+                
+                
+                monster_party = db.get(monster_party_key)
+                if monster_party is None or monster_party.class_name() != 'NonPlayerParty':
+                    r = API404
+                    r[MSG] = 'Party not found for monster_party_key '+monster_party_key+' .'                            
+                    return self.response.out.write(simplejson.dumps(r))                
                 
                 # Both Power.Attack and Item.Weapon are considered an 'attack'
                 
@@ -432,12 +441,15 @@ class APIPartyActions(APIBase):
                         return self.response.out.write(simplejson.dumps(r))
                         monsters.remove(m)
                 
-                damage = party.getJSONAttack(_party, monsters, 
-                                             player, attack)
+                json_damage, entities = party.getJSONAttack(monster_party, 
+                                                            monsters, 
+                                                            player, 
+                                                            attack)
                 
                 r = API200
                 r[MSG] = 'Smite thy enemies!'
-                r['monsters'] = damage                                                                             
+                r['monsters'] = json_damage 
+                db.put(entities)                                                                              
                     
             # Character checkins in at a location seeking Parties, Traps or
             # Events.
@@ -482,7 +494,8 @@ class APIPartyActions(APIBase):
         else:
             r = API404
             r[MSG] = 'Party not found for key '+key+' .'
-          
+         
+
         return self.response.out.write(simplejson.dumps(r)) 
 
 ######################## METHODS #############################################

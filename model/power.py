@@ -60,7 +60,7 @@ def seedAttacks():
                                attack_mod = x['attack_mod'],
                                defense_ability = x['defense_ability'],
                                damage_weapon_multiplier = x['damage_weapon_multiplier'],
-                               damage_ability_mod = x['damage_ability_mod'],
+                               damage_ability_type = x['damage_ability_type'],
                                damage_dice = x['damage_dice'],
                                damage_die = x['damage_die'],
                                max_targets =  x['max_targets'],
@@ -87,7 +87,7 @@ def getJSONPower(model_name, model):
         json['attack_mod'] = model.attack_mod
         json['defense_ability'] = model.defense_ability
         json['damage_weapon_multiplier'] = model.damage_weapon_multiplier
-        json['damage_ability_mod'] = model.damage_ability_mod
+        json['damage_ability_type'] = model.damage_ability_type
         json['damage_dice'] = model.damage_dice
         json['damage_die'] = model.damage_die
         json['effect'] = model.effect
@@ -125,7 +125,7 @@ ATTACK_DATA = [
   'damage_die': 0,
   'damage_dice': 0,
   'damage_weapon_multiplier': 1,  
-  'damage_ability_mod': None},
+  'damage_ability_type': None},
   {'name': 'Furious Strike',
   'description': 'Unleash your anger.', 
   'casts': ['Fighter'],
@@ -143,7 +143,7 @@ ATTACK_DATA = [
   'damage_die': 0,
   'damage_dice': 0,
   'damage_weapon_multiplier': 2,  
-  'damage_ability_mod': 'STR'},
+  'damage_ability_type': 'STR'},
   {'name': 'Brute Strike',
   'description': 'Shatter armor and bone with your might.', 
   'casts': ['Fighter'],
@@ -161,7 +161,7 @@ ATTACK_DATA = [
   'damage_die': 0,
   'damage_dice': 0,
   'damage_weapon_multiplier': 3,  
-  'damage_ability_mod': 'STR'},    
+  'damage_ability_type': 'STR'},    
   
   ############################## ROGUE ATTACKS  ##############################
        
@@ -183,7 +183,7 @@ ATTACK_DATA = [
   'damage_die': 0,
   'damage_dice': 0,     
   'damage_weapon_multiplier': 1,
-  'damage_ability_mod': 'DEX'},
+  'damage_ability_type': 'DEX'},
   {'name': 'Torturous Strike',
   'casts': ['Rogue'],
   'level': 1,      
@@ -202,7 +202,7 @@ ATTACK_DATA = [
   'damage_die': 0,
   'damage_dice': 0,     
   'damage_weapon_multiplier': 2,
-  'damage_ability_mod': 'DEX'},
+  'damage_ability_type': 'DEX'},
   {'name': 'Sly Strike',
   'casts': ['Rogue'],
   'level': 1,      
@@ -221,7 +221,7 @@ ATTACK_DATA = [
   'damage_die': 0,
   'damage_dice': 0,     
   'damage_weapon_multiplier': 3,
-  'damage_ability_mod': 'DEX'},
+  'damage_ability_type': 'DEX'},
 
   ############################## WIZARD ATTACKS  #############################
   {'name': 'Magic Missile',
@@ -239,10 +239,10 @@ ATTACK_DATA = [
   'attack_ability': 'INT',
   'attack_mod': 0,
   'defense_ability': 'REF',
-  'damage_die': 2,
-  'damage_dice': 4,     
+  'damage_die': 4,
+  'damage_dice': 2,     
   'damage_weapon_multiplier': 0,
-  'damage_ability_mod': 'INT'},
+  'damage_ability_type': 'INT'},
   {'name': 'Ray of Frost',
   'casts': ['Wizard'],
   'level': 1,      
@@ -258,10 +258,10 @@ ATTACK_DATA = [
   'attack_ability': 'INT',
   'attack_mod': 0,
   'defense_ability': 'FORT',
-  'damage_die': 1,
-  'damage_dice': 6,     
+  'damage_die': 6,
+  'damage_dice': 1,     
   'damage_weapon_multiplier': 0,
-  'damage_ability_mod': 'INT'},  
+  'damage_ability_type': 'INT'},  
   {'name': 'Burning Hands',
   'casts': ['Wizard'],
   'level': 1,      
@@ -277,10 +277,10 @@ ATTACK_DATA = [
   'attack_ability': 'INT',
   'attack_mod': 0,
   'defense_ability': 'REF',
-  'damage_die': 2,
-  'damage_dice': 6,     
+  'damage_die': 6,
+  'damage_dice': 2,     
   'damage_weapon_multiplier': 0,
-  'damage_ability_mod': 'INT'},  
+  'damage_ability_type': 'INT'},  
   {'name': 'Acid Arrow',
   'casts': ['Wizard'],
   'level': 1,      
@@ -296,10 +296,10 @@ ATTACK_DATA = [
   'attack_ability': 'INT',
   'attack_mod': 0,
   'defense_ability': 'REF',
-  'damage_die': 3,
-  'damage_dice': 8,     
+  'damage_die': 8,
+  'damage_dice': 3,     
   'damage_weapon_multiplier': 0,
-  'damage_ability_mod': 'INT'}, 
+  'damage_ability_type': 'INT'}, 
  
   ############################## CLERIC ATTACKS  #############################
   {'name': 'Weapon of Faith',
@@ -320,7 +320,7 @@ ATTACK_DATA = [
   'damage_die': 1,
   'damage_dice': 8,     
   'damage_weapon_multiplier': 0,
-  'damage_ability_mod': 'WIS'}, 
+  'damage_ability_type': 'WIS'}, 
   {'name': 'Spoken Word',
   'casts': ['Cleric'],
   'level': 1,      
@@ -339,7 +339,7 @@ ATTACK_DATA = [
   'damage_die': 2,
   'damage_dice': 6,     
   'damage_weapon_multiplier': 0,
-  'damage_ability_mod': 'WIS'},
+  'damage_ability_type': 'WIS'},
   {'name': 'Cleansing Flame',
   'casts': ['Cleric'],
   'level': 1,      
@@ -358,7 +358,7 @@ ATTACK_DATA = [
   'damage_die': 1,
   'damage_dice': 6,     
   'damage_weapon_multiplier': 2,
-  'damage_ability_mod': 'STR'}] 
+  'damage_ability_type': 'STR'}] 
   
 
      
