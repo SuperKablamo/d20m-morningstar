@@ -186,7 +186,9 @@ def attackMonster(attacker, attack, monster):
             damage = 0
             # Check for mods and add Damage
             if damage_die != 0:
-                damage += utils.roll(damage_die, damage_dice)
+                damage_roll= utils.roll(damage_die, damage_dice)
+                logging.info(_trace+'damage_roll = '+str(damage_roll))                  
+                damage += damage_roll
             if ability:
                 damage_mod = attacker.scores['abilities'][ability]['mod']
                 damage += damage_mod
@@ -266,10 +268,6 @@ def rollEncounter(player_party, geo_pt):
         last_encounter = {'time_since': time.time(), 'checks': 0}
         player_party.log['encounter_log']['last_encounter'] = last_encounter
         
-        monster_party = models.NonPlayerParty(location = geo_pt, 
-                                              monsters = [],
-                                              json = {'monsters': []})
-        
         # Get number of PCs and the average level of the Party ...
         party_size = len(player_party.players)
         members = db.get(player_party.players)
@@ -277,7 +275,11 @@ def rollEncounter(player_party, geo_pt):
         for m in members:
             total = total + m.level
         avg_level = total/party_size
-        logging.info(_trace+'avg_level = '+str(avg_level))
+        logging.info(_trace+'avg_level = '+str(avg_level))        
+        monster_party = models.NonPlayerParty(location = geo_pt, 
+                                              monsters = [],
+                                              json = {'monsters': []},
+                                              level = avg_level)
         
         # Get the appropriate Monster table for the Party level ...    
         monster_level = MONSTER_XP_LEVELS[avg_level]

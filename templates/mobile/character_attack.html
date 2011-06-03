@@ -8,7 +8,6 @@
 		<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true&language=en"></script>
 		<script type="text/javascript">
 		$(function() {
-			var url = '/api/parties/{{party_key}}/attack';	
 			$('#attack').bind('pageshow', function() {
         var success = function(position) {   
 					$('label').find('.ui-btn-text').append('<span class="damage-message"></span>')
@@ -18,6 +17,7 @@
 					var player_xp = {{player.experience}};
 					$('input[name="location"]').val(lat+","+lon);
 					$('#attack-action').bind('click', function() {
+			      var url = '/api/parties/{{party_key}}/attack';	
 						var attack_data = $('#attack-form').serialize();
 						$.ajax({
 							type: "POST",
@@ -62,9 +62,6 @@
 			});
 		});
 		</script>		
-
-
-
 		{% endblock %}
 		
 		{% block page-id %}
@@ -118,12 +115,13 @@
 							{% for a in player.powers.attacks %}		
 	         		<input type="radio" name="attack_key" id="{{a.key}}" value="{{a.key}}" />
 	         		<label for="{{a.key}}">{{a.name}}&nbsp;&nbsp;
+								{{a.attack_ability}}
 								{% if a.attack_mod %}
-								  {{a.attack_ability}}&#43;{{a.attack_mod}}&nbsp;&nbsp;
+								  &#43;{{a.attack_mod}}&nbsp;&nbsp;
 								{% endif %}
 								<span class="key">&nbsp;&nbsp;dmg</span>
 								{% if a.damage_weapon_multiplier %}
-									{{a.damage_weapon_multiplier}}W &nbsp;&nbsp;
+									{{a.damage_weapon_multiplier}}W&nbsp;
 								{% endif %}
 								{% if a.damage_dice %}
 									{{a.damage_dice}}d{{a.damage_die}}
@@ -165,13 +163,12 @@
 			</div><!-- /content -->
 			{% endblock %}
 
-		{% block footer %}
-		<div data-role="footer" data-theme="d" data-position="fixed" id="footer">
-			{% if monster_party.monsters %}
-			<a href="#" data-role="button" data-theme="b" id="attack-action" class="button">ATTACK!</a>
-			{% else %}
-			<a href="#" data-role="button" data-theme="b" id="loot-action" class="button">LOOT!</a>
-			{% endif %}
-		</div><!-- /footer -->			
-		{% endblock %}			
-
+			{% block footer %}
+			<div data-role="footer" data-theme="d" data-position="fixed" id="footer">
+				{% if monster_party.monsters %}
+				<a href="#" data-role="button" data-theme="b" id="attack-action" class="button">ATTACK!</a>
+				{% else %}
+				<a href="/mobile/party/{{party_key}}/loot/{{monster_party.key}}" data-role="button" data-theme="b" id="loot-action" class="button" target="_blank">LOOT!</a>
+				{% endif %}
+			</div><!-- /footer -->			
+			{% endblock %}	

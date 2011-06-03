@@ -11,6 +11,7 @@
 
 ############################# SK IMPORTS #####################################
 ############################################################################## 
+import loot
 import models
 import rules
 
@@ -112,15 +113,48 @@ def getJSONAttack(monster_party, monsters, attacker, attack):
     updated.
     '''
     json_damage = []
+    # For each monster attack, perform the attack
     for m in monsters:
         json_result, entities = rules.attackMonster(attacker, attack, m)
         json_damage.append(json_result)
+        # If the monster is killed, update monster party and player xp
         if json_result['hp'] == 0:
             monster_party.monsters.remove(m.key())
             monster_party.deadpool.append(m.key())
             entities.append(monster_party)
+            attacker.experience += m.experience
+            entities.append(attacker)
                 
     return json_damage, entities    
+
+def getJSONLoot(monster_party, player_party):
+    '''Returns results for Loot earned from defeated NonPlayerParty, and any
+    entities to be updated.  
+    '''
+    _trace = TRACE + 'getJSONLoot() '
+    logging.info(_trace)
+    return   
+
+def getGoldLoot(monster_party, player_party):
+    '''Returns gold earned from defeated NonPlayerParty, and any entities to 
+    be updated.  
+    '''
+    _trace = TRACE + 'getGoldLoot() '
+    logging.info(_trace)
+    entities = []
+    level = monster_party.level
+    gold = loot.goldLoot(level)
+    _player = player_party.leader
+    purse = _player.purse
+    purse['gold'] += gold
+    _player.purse = purse 
+    entities.append(_player)
+       
+    # Update monster_party
+    monster_party.looted = True
+    entities.append(monster_party)   
+     
+    return gold, entities    
     
 ####################### DATA ################################################
 ##############################################################################

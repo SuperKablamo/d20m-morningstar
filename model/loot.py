@@ -10,6 +10,7 @@
 
 ############################# SK IMPORTS #####################################
 ############################################################################## 
+from settings import *
 from utils import roll
 
 ############################# GAE IMPORTS ####################################
@@ -21,13 +22,13 @@ from random import choice
 ######################## METHODS #############################################
 ##############################################################################
 def loot(level):
-    """Creates random loot for a level.
+    '''Creates random loot for a level.
     {
      'coins': {'coin': 'gp', 'amount': 100}, 
      'gems': [{'gp': 100, 'type': 'Ruby'}, {'gp': 1000, 'type': 'Diamond'}],
      'item': item.json
     }
-    """
+    '''
     logging.info('METHOD:: loot()')
     treasure = TREASURE[level]
     loot = {'coins': None, 'gems': None, 'item': None}
@@ -113,11 +114,53 @@ def loot(level):
                                     
     return loot            
 
+def goldLoot(level):
+    '''A simple loot generator: creates random gold loot for a level.
+    '''
+    _trace = TRACE + 'goldLoot('+str(level)+') '
+    logging.info(_trace)
+    treasure = TREASURE[level-1]
+    logging.info(_trace+'treasure = '+str(treasure))
+    # Coins
+    coins_roll = roll(100, 1)
+    logging.info('VALUE:: coins_roll = '+str(coins_roll))
+    coins = treasure['coins']
+    gp = 0
+    for x in coins:
+        range_ = x['range']
+        if coins_roll <= range_ and not coins_roll > range_:
+            dice = x['dice']
+            die = x['die']
+            if dice > 0:
+                coin = x['coin']
+                base = x['base']
+                multiplier = roll(die, dice) 
+                amount = multiplier*base
+                # Convert to gold
+                if coin == 'cp':
+                    gp += amount/100
+                elif coin == 'sp':
+                    gp += amount/10
+                elif coin == 'gp':
+                    gp += amount
+                elif coin == 'pp':
+                    gp += amount*10
+                logging.info('gp = '+str(gp))    
+                return gp                   
+
+def distributeLoot(player_party, json_loot):
+    '''Puts Loot to the leader of the Party, and then Returns the Player
+    entity to be updated.
+    '''
+    
+    
+    
+    return player
 
 ######################## DATA ################################################
 ##############################################################################
 TREASURE = [
-    {'1': { 
+        { 
         'coins': [ 
             {'range': 14, 'dice': 0, 'die': 0, 'coin': '', 'base': 0},
             {'range': 29, 'dice': 1, 'die': 6, 'coin': 'cp', 'base': 1000},
@@ -135,9 +178,8 @@ TREASURE = [
             {'range': 95, 'dice': 1, 'die': 1},
             {'range': 100, 'dice': 1, 'die': 2},        
             ]
-        }        
-    },
-    {'2': {
+        },
+        {
         'coins': [
             {'range': 13, 'dice': 0, 'die': 0, 'coin': '', 'base': 0},
             {'range': 23, 'dice': 1, 'die': 10, 'coin': 'cp', 'base': 1000},
@@ -155,9 +197,8 @@ TREASURE = [
             {'range': 85, 'dice': 1, 'die': 1},
             {'range': 100, 'dice': 1, 'die': 2},        
             ]    
-        }
-    },
-    {'3': {
+        },
+        {
         'coins': [
             {'range': 11, 'dice': 0, 'die': 0, 'coin': '', 'base': 0},
             {'range': 21, 'dice': 2, 'die': 10, 'coin': 'cp', 'base': 1000},
@@ -175,9 +216,8 @@ TREASURE = [
             {'range': 79, 'dice': 1, 'die': 2},
             {'range': 100, 'dice': 1, 'die': 3},
             ]    
-        }
-    },
-    {'4': {
+        },
+        {
         'coins': [
             {'range': 11, 'dice': 0, 'die': 0, 'coin': '', 'base': 0},
             {'range': 21, 'dice': 3, 'die': 10, 'coin': 'cp', 'base': 1000},
@@ -195,9 +235,8 @@ TREASURE = [
             {'range': 62, 'dice': 1, 'die': 2},
             {'range': 100, 'dice': 1, 'die': 3},        
             ]    
-        }
-    },
-    {'5': {
+        },
+        {
         'coins': [
             {'range': 10, 'dice': 0, 'die': 0, 'coin': '', 'base': 0},
             {'range': 19, 'dice': 1, 'die': 4, 'coin': 'cp', 'base': 10000},
@@ -215,9 +254,8 @@ TREASURE = [
             {'range': 67, 'dice': 1, 'die': 2},
             {'range': 100, 'dice': 1, 'die': 3},        
             ]    
-        }
-    },
-    {'6': {
+        },
+        {
         'coins': [
             {'range': 10, 'dice': 0, 'die': 0, 'coin': '', 'base': 0},
             {'range': 18, 'dice': 1, 'die': 6, 'coin': 'cp', 'base': 10000},
@@ -236,9 +274,8 @@ TREASURE = [
             {'range': 99, 'dice': 1, 'die': 3},    
             {'range': 100, 'dice': 1, 'die': 4},             
             ]    
-        }
-    },                                
-    {'7': {
+        },
+        {
         'coins': [
             {'range': 11, 'dice': 0, 'die': 0, 'coin': '', 'base': 0},
             {'range': 18, 'dice': 1, 'die': 10, 'coin': 'cp', 'base': 10000},
@@ -256,9 +293,8 @@ TREASURE = [
             {'range': 97, 'dice': 1, 'die': 3},
             {'range': 100, 'dice': 1, 'die': 4},        
             ]    
-        }
-    },
-    {'8': {
+        },
+        {
         'coins': [
             {'range': 10, 'dice': 0, 'die': 0, 'coin': '', 'base': 0},
             {'range': 15, 'dice': 1, 'die': 12, 'coin': 'cp', 'base': 10000},
@@ -276,8 +312,7 @@ TREASURE = [
             {'range': 96, 'dice': 1, 'die': 3},
             {'range': 100, 'dice': 1, 'die': 4},        
             ]    
-        }
-    }] 
+        }] 
 
 GEMS = [
         {'range': 25, 'dice': 4, 'die': 4, 'base': 1,  

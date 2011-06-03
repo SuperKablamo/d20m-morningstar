@@ -147,6 +147,34 @@ class CharacterAttackHandler(BaseHandler):
         logging.info(_trace+'key = '+key)
         #return {'foo': 123}
         self.redirect('/mobile/character/'+key+'/quest')        
+
+class LootHandler(BaseHandler):
+    def get(self, player_party_key, monster_party_key):
+        _trace = TRACE+'LootHandler.get() '
+        logging.info(_trace)   
+        keys = [player_party_key, monster_party_key]
+        parties = db.get(keys)
+        _party = None
+        npc_party = None
+        for p in parties:
+            if p.class_name() == 'NonPlayerParty':
+                npc_party = p
+            elif p.class_name() == 'PlayerParty':
+                _party = p
+        
+        party_key = str(_party.key())
+        _player = character.getJSONPlayer(_party.leader)
+        gold, entities = party.getGoldLoot(npc_party, _party)
+        db.put(entities)
+        user = users.get_current_user()
+                        
+        template_values = {
+            'player': _player,
+            'party_key': party_key,
+            'gold': gold,
+            'user': user
+        }        
+        generate(self, 'character_quest.html', template_values)
         
 ######################## METHODS #############################################
 ##############################################################################
@@ -169,6 +197,8 @@ application = webapp.WSGIApplication([('/mobile/character/create',
                                        CharacterAttackHandler),                                       
                                       (r'/mobile/character/(.*)', 
                                        CharacterSheetHandler),
+                                      (r'/mobile/party/(.*)/loot/(.*)',
+                                       LootHandler), 
                                       (r'/mobile/.*', 
                                        MainHandler)
                                      ],

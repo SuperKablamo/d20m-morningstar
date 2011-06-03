@@ -98,9 +98,19 @@
         navigator.geolocation.getCurrentPosition(success, fail);				
 			});
 		});
-
-	
 		</script>
+			{% if gold %}
+			<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.13/jquery-ui.min.js"></script>
+			<script>
+			$(document).ready(function() {
+				setTimeout(function() { 
+					$('#gold').effect("highlight", {color:'yellow'}, 8000); 
+					}, 
+					3000);
+			});
+			</script>
+			{% endif %}
+		
 		{% endblock %}
 		
 		{% block jquery-mobile-script %}
@@ -142,7 +152,7 @@
 								<th>xp</th>
 								<td>{{player.experience}}</td>
 								<th>gp</th>
-								<td>{{player.purse.gold}}</td>
+								<td id="gold">{{player.purse.gold}}</td>
 							</tr>					
 						</tbody>	
 					</table>	

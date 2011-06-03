@@ -143,7 +143,8 @@ class APIPlayerCharacters(APIBase):
             r[_character.class_name()] = character.getJSONPlayer(_character)
         else:
             r = API404
-            r[MSG] = 'PlayerCharacter not found for key '+key+' .'                
+            r[MSG] = 'PlayerCharacter not found for key '+key+' .'  
+            
         return self.response.out.write(simplejson.dumps(r)) 
     
     # TODO: NOT TESTED
@@ -478,6 +479,21 @@ class APIPartyActions(APIBase):
                 data = monster_party.json
                 data['key'] = str(monster_party.key())
                 r['NonPlayerParty'] = data
+
+            #Character sends a message to character(s) in a Party.
+            elif action == 'loot':
+                monster_party_key = self.request.get('monster_party_key')
+                monster_party = db.get(monster_party_key)
+                if monster_party is None or monster_party.class_name() != 'NonPlayerParty':
+                    r = API404
+                    r[MSG] = 'Party not found for monster_party_key '+monster_party_key+' .'                            
+                    return self.response.out.write(simplejson.dumps(r))
+                                    
+                gold, entities = party.getGoldLoot(monster_party, _party)
+                db.put(entities)
+                r = API200
+                r['gold'] = gold
+                r[MSG] = 'Treasure for a king!'
             
             #Character sends a message to character(s) in a Party.
             elif action == 'greet':

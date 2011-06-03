@@ -342,7 +342,9 @@ class Party(polymodel.PolyModel): # A party of PCs or NPCs
     # All killed players/monsters
     deadpool = db.ListProperty(db.Key, required=True, default=None)
     # Has this Party been looted for treasure?
-    looted = db.BooleanProperty(required=True, default=False)      
+    looted = db.BooleanProperty(required=True, default=False)    
+    # The play level of the party
+    level = db.IntegerProperty(required=False)  
 
 class PlayerParty(Party):
     leader = db.ReferenceProperty(PlayerCharacter, required=True)
