@@ -56,6 +56,7 @@ def generate(self, template_name, template_values):
 BATTLE_PINS = [
     {'lat':47.6, 'lon':-122.3, 'location': 'Seattle, Washington'},
     {'lat':38.651198, 'lon':-90.2362, 'location': 'St. Louis, Missouri'},
+    {'lat':40.881852261133716, 'lon':-72.73434162139893, 'location': 'Long Island, New York'},
     {'lat':38.66, 'lon':-109.59, 'location': 'Arches National Park'}    
   ]
  
@@ -64,6 +65,8 @@ MONSTER_PINS = [
     {'lat':32.7272, 'lon':-117.1692, 'location': 'San Diego, California'},
     {'lat':33.9616, 'lon':-117.4109, 'location': 'Riverside, California'},    
     {'lat':34.1755, 'lon':-118.8501, 'location': 'Thousand Oaks, California'},  
+    {'lat':30.243006016254498, 'lon':-97.70562171936035, 'location': 'Austin, Texas'}, 
+    {'lat':40.771831872647006, 'lon':-73.97254586219788, 'location': 'New York, New York'}, 
     {'lat':37.3204, 'lon':-113.0747, 'location': 'Zion National Park'}
   ]
 
