@@ -60,7 +60,8 @@ def getJSONMonster(monster):
     json['keywords'] = keywords
     json['languages'] = languages
     json['immunities'] = immunities
-    return json
+    
+    return monsters
 
 def getJSONMonsterLite(monster):
     '''Returns a Monster as JSON, but only includes basic properties.

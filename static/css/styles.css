@@ -10,7 +10,7 @@ html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockq
 
 /*COMMON STYLES*/
 html { height:100%}
-body { height:100%; margin:0px; padding:0px; font-family:Arial,sans-serif; font-size:62.5%; color:#181818; background-color:#000; }
+body { height:100%; margin:0px; padding:0px; font-family:Arial,sans-serif; font-size:62.5%; color:#181818; background-color:#ddd; }
 #content { width:800px; }
 a { color:#cc3333; cursor:pointer; outline:medium none; text-decoration:none; }
 h1, h2, h3, h4, h5 { font-weight:normal; }
@@ -25,6 +25,8 @@ h1#error { font-size: 40px; color: red; }
 .text13 { line-height:1.3em; font-size:1.3em; }
 .text14 { line-height:1.4em; font-size:1.4em; }
 .text1416 { line-height:1.6em; font-size:1.4em; }
+.text16 { line-height:1.6em; font-size:1.6em; }
+.im { font-family:'IM Fell English SC',arial,serif; font-size:1.2em; }
 p.info { padding:10px; }
 
 /*HEADER*/
@@ -39,14 +41,14 @@ h2 span.highlight { color:#181818; font-size:1.0em; }
 
 /*BETA*/
 #beta-wrap { float:right; width:190px;}
-#beta { width:190px; height:52px; background:url("/static/images/join-the-beta.png") no-repeat; margin-top:12px; }
+#beta { width:190px; height:52px; /*background:url("/static/images/join-the-beta.png") no-repeat;*/ margin-top:12px; }
 #android { padding:0 0 0 0; }
 #text-android { float:left; margin:6px 0 0 20px; }
 #android h2 { padding:0; }
 #logo-android { background:url("/static/images/logo-android-tiny.png") no-repeat; width:60px; height:60px; float:right; margin:-14px 8px 0 0; }
 
 /*MAP*/
-#map_canvas { height:388px; width:788px; border:6px solid #ddd; }
+#map_canvas { height:388px; width:800px; border-top:6px solid #ddd; border-bottom:6px solid #ddd; }
 
 /*COLUMNS*/
 #columns { width:760px; clear:both; overflow:hidden; padding:10px 20px; color: #333; background-color:#fff; }
@@ -61,9 +63,11 @@ h2 span.highlight { color:#181818; font-size:1.0em; }
 #news .time { font-size:.8em; }
 
 /*GAMEPLAY*/
-#game-play { float:right; width:240px; }
+#game-play { float:right; width:300px; }
 #summary-wrap { }
-#summary-wrap .summary { clear:both; }
+#summary-wrap p { padding-top:8px; text-align:justify; text-justify:distribute; }
+#summary-wrap .summary { clear:both; overflow:hidden; padding-bottom:10px; }
+#summary-wrap .legend { clear:both; overflow:hidden; padding:10px 0; }
 #summary-wrap .mark { float:left; }
 #summary-wrap .summary-text { float:left; font-family:'IM Fell English SC',arial,serif; font-size:2em; text-align:center; margin:4px 0 0 10px; width:120px; }
 
