@@ -1,12 +1,14 @@
 <!DOCTYPE HTML>
 <html lang="en">
   <head>
-  	<title>d20mobile - Morningstar</title>
+  	<title>{% block title %}d20 mobile - Morningstar{% endblock %}</title>
 
 	  <meta charset="utf-8" />
 
 		<link rel="stylesheet" type="text/css" href="/static/css/styles.css" />
 		<link href='http://fonts.googleapis.com/css?family=IM+Fell+English+SC' rel='stylesheet' type='text/css'>
+		
+		{% block script %}
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.0/jquery.js"></script>
 
 		<!-- Google Maps API -->
@@ -17,10 +19,11 @@
 		</script>
 		<script type="text/javascript">
 		  function initialize() {
-		    var center = new google.maps.LatLng(39.2, -94.6);
+		    //var center = new google.maps.LatLng(39.2, -94.6);
+		    var center = new google.maps.LatLng(37.772716181039605, -122.45494365692139);
 		 	  var myLatlng = new google.maps.LatLng(36.14,-115.14);
 		    var myOptions = {
-		      zoom: 4,
+		      zoom: 16,
 		      center: center,
 		      mapTypeId: google.maps.MapTypeId.ROADMAP
 		    };
@@ -29,10 +32,16 @@
 				setMonsterPartyMarkers(map, monsters);
 				setDeathMarkers(map, players);
 				setBattleMarkers(map, battles);
+				setMonsterPartyMarkers(map, c_monsters);
+				setDeathMarkers(map, c_players);
+				setBattleMarkers(map, c_battles);				
 		  }
 			var players = {{players}};
 			var monsters = {{monsters}};
 			var battles = {{battles}};
+			var c_players = {{c_players}};
+			var c_monsters = {{c_monsters}};
+			var c_battles = {{c_battles}};			
 			function setMonsterPartyMarkers(map, locations) {
 			  var image = new google.maps.MarkerImage('/static/images/mark-monster-32x40.png',
         	new google.maps.Size(32.0, 40.0),
@@ -136,17 +145,27 @@
 			  }
 			}	
 		</script>
-	
+		{% endblock %}
+		
   </head> 
   <body onload="initialize()">
 		<div id="wrapper">
 			<div id="content">
+				
+				{% block header %}
 				<header id="header-wrap">
 					<div id="logo"></div>
 					<div id="title">
-						<h1>Morningstar</h1>
+						<h1><a href="/">Morningstar</a></h1>
 						<h2><span class="highlight">L</span>ocation&nbsp;&nbsp;<span class="highlight">A</span>ware&nbsp;&nbsp; <span class="highlight">R</span>ole&nbsp;&nbsp; <span class="highlight">P</span>laying</h2>							
 					</div>
+					<div id="kickstarter-wrap">
+						<h2><a href="http://www.kickstarter.com">Check Out Our<br/>
+							<img src="/static/images/kickstarter-logo-200x24.png"/><br/>
+							<span style="float:right;">Rewards</span></a>
+						</h2>	
+					</div>	
+					<!--
 					<div id="beta-wrap">
 						<div id="beta">
 						</div>
@@ -157,13 +176,17 @@
 							<div id="logo-android">
 							</div>
 						</div>
-					</div>
+					</div>-->
 				</header><!-- /main-header -->
+				{% endblock %}
 				
+				{% block map %}
 				<section id="map">
 				  <div id="map_canvas"></div>
 				</section><!-- /map -->
+				{% endblock %}
 				
+				{% block content %}
 				<div id="columns">
 										
 					<section id="news">
@@ -274,8 +297,8 @@
 							</div>
 							<div class="summary">
 								<h2>When Can I Play?</h2>
-								<p class="text14">Sometime this summer the game will be available on Android for free.  Join our Google Group to stay informed and be part of the Beta release.</p>
-								<table border=0 style="background-color: #fff; padding:10px 0;" cellspacing=0>
+								<p class="text14">This is a <a href="http://www.kickstarter.com">Kickstarter project</a>.  Once the funding goal is reached, development will take approximately 12-16 weeks.  For as little as $5 you can <a href="http://www.kickstarter.com">become a backer</a> of this project and get special rewards, including an invitation to the beta release.   </p>
+								<!--<table border=0 style="background-color: #fff; padding:10px 0;" cellspacing=0>
 								  <form action="http://groups.google.com/a/d20m.com/group/morningstar/boxsubscribe">
 								  	<tr>
 											<td style="padding-left: 5px;">
@@ -284,7 +307,7 @@
 								  		</td>
 										</tr>
 									</form>
-								</table>							
+								</table>-->							
 							</div>							
 							<h2>Legend</h2>	
 							<div class="legend">
@@ -314,7 +337,9 @@
 						</div>
 					</section><!-- /summary -->
 				</div><!-- /columns -->	
+				{% endblock %}
 					
+				{% block footer %}	
 				<footer>
 					<div id="footer-wrap">
 						<div >
@@ -325,11 +350,17 @@
 								&nbsp;&nbsp;|&nbsp;&nbsp;								
 								<a title="Open Game License" href="/open">Open Game License</a>	
 								&nbsp;&nbsp;|&nbsp;&nbsp;								
-								<a title="Blog" href="http://blog.d20m.com">Blog</a>								
+								<a title="Blog" href="#">Blog</a>
+								&nbsp;&nbsp;|&nbsp;&nbsp;								
+								<a title="Facebook" href="http://www.facebook.com/pages/D20-Mobile/216578018373721"><img style="vertical-align:bottom;width:28px;height:28px;" src="/static/images/facebook-logo-32x32.png"/></a>								
+								&nbsp;&nbsp;|&nbsp;&nbsp;								
+								<a title="Kickstarter" href="http://www.kickstarter.com"><img style="vertical-align:bottom;width:28px;height:28px;" src="/static/images/kickstarter-logo-32x32.png"/></a>								
 							</p>								
 							<p>The Android robot logo is a trademark of Google Inc. Use of this trademark is subject to <a href="http://www.google.com/permissions/index.html">Google Permissions</a>.</p> 
 					</div>
 				</footer>
+				{% endblock %}
+				
 			</div><!-- /content -->	
 		</div><!-- /wrapper -->
   </body>		

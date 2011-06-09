@@ -55,13 +55,12 @@ def getJSONMonster(monster):
     languages = []
     for l in monster.languages:
         languages.append(l)
-    
     json['artifacts'] = artifacts
     json['keywords'] = keywords
     json['languages'] = languages
     json['immunities'] = immunities
     
-    return monsters
+    return json
 
 def getJSONMonsterLite(monster):
     '''Returns a Monster as JSON, but only includes basic properties.

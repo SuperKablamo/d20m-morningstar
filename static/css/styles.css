@@ -14,18 +14,17 @@ body { height:100%; margin:0px; padding:0px; font-family:Arial,sans-serif; font-
 #content { width:800px; }
 a { color:#cc3333; cursor:pointer; outline:medium none; text-decoration:none; }
 h1, h2, h3, h4, h5 { font-weight:normal; }
-#title a { font-weight: normal; margin: 5px 0; font-size: 3em; clear: both; }
-#header, #footer {color: #fff; }
+#header, #footer { color: #fff; }
 h1#error { font-size: 40px; color: red; }
-.text10 { line-height:1em; font-size:1em; } 
-.text1014 { line-height:1.4em; font-size:1em; } 
-.text11 { line-height:1.1em; font-size:1.1em; } 
-.text12 { line-height:1.2em; font-size:1.2em; }
-.text1216 { line-height:1.6em; font-size:1.2em; }
-.text13 { line-height:1.3em; font-size:1.3em; }
-.text14 { line-height:1.4em; font-size:1.4em; }
-.text1416 { line-height:1.6em; font-size:1.4em; }
-.text16 { line-height:1.6em; font-size:1.6em; }
+.text10 { font-size:1em; line-height:1em;  } 
+.text1014 { font-size:1em; line-height:1.4em; } 
+.text11 { font-size:1.1em; line-height:1.1em; } 
+.text12 { font-size:1.2em; line-height:1.2em; }
+.text1216 { font-size:1.2em; line-height:1.6em; }
+.text13 { font-size:1.3em; line-height:1.3em; }
+.text14 { font-size:1.4em; line-height:1.4em; }
+.text1416 { font-size:1.4em; line-height:1.6em; }
+.text16 { font-size:1.6em; line-height:1.6em; }
 .im { font-family:'IM Fell English SC',arial,serif; font-size:1.2em; }
 p.info { padding:10px; }
 
@@ -34,21 +33,34 @@ p.info { padding:10px; }
 #logo { background:url("/static/images/logo-d20.png") no-repeat; width:64px; height:100px; float:left; }
 #title { float:left; margin:4px 0 0 4px; }
 h1 { font-family:'IM Fell English SC',arial,serif; font-size:4.6em; }
+h1 a { text-decoration:none; color:#181818; }
 #title h2, #android h2 {font-family:'IM Fell English SC',arial,serif; font-size:1.8em; padding:6px 0 0 8px; }
 #title h2 { padding:6px 0 0 8px; }
 /* use for highlighting LARP in tagline */
 h2 span.highlight { color:#181818; font-size:1.0em; } 
 
 /*BETA*/
-#beta-wrap { float:right; width:190px;}
+#beta-wrap { float:right; width:190px; }
 #beta { width:190px; height:52px; /*background:url("/static/images/join-the-beta.png") no-repeat;*/ margin-top:12px; }
 #android { padding:0 0 0 0; }
 #text-android { float:left; margin:6px 0 0 20px; }
 #android h2 { padding:0; }
 #logo-android { background:url("/static/images/logo-android-tiny.png") no-repeat; width:60px; height:60px; float:right; margin:-14px 8px 0 0; }
 
+/* KICKSTART */
+#kickstarter-wrap { float:right; width:200px; margin:18px 0 0 0; }
+#kickstarter-wrap img { padding:4px 0; }
+#kickstarter-wrap a { text-decoration:none; color:#181818; }
+
 /*MAP*/
 #map_canvas { height:388px; width:800px; border-top:6px solid #ddd; border-bottom:6px solid #ddd; }
+
+/* PAGE */
+#page { margin:10px 24px; }
+#page h2 { font-family:'IM Fell English SC',arial,serif; font-size:3.0em; }
+#page h3 { font-family:'IM Fell English SC',arial,serif; font-size:2.0em; }
+#page p { padding:4px 2px; }
+
 
 /*COLUMNS*/
 #columns { width:760px; clear:both; overflow:hidden; padding:10px 20px; color: #333; background-color:#fff; }

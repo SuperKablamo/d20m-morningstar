@@ -36,9 +36,20 @@ class MainHandler(webapp.RequestHandler):
         template_values = {
             'players': simplejson.dumps(DEATH_PINS),
             'monsters': simplejson.dumps(MONSTER_PINS),
-            'battles': simplejson.dumps(BATTLE_PINS)
+            'battles': simplejson.dumps(BATTLE_PINS),
+            'c_players': simplejson.dumps(C_DEATH_PINS),
+            'c_monsters': simplejson.dumps(C_MONSTER_PINS),
+            'c_battles': simplejson.dumps(C_BATTLE_PINS)            
         }        
         generate(self, 'main.html', template_values)               
+
+class PageHandler(webapp.RequestHandler):
+    def get(self, page):
+        _trace = TRACE+'StaticHandler:: get() '
+        logging.info(_trace)
+        _page = 'page_' + page + '.html'        
+        template_values = {}        
+        generate(self, _page, template_values)
 
 ######################## METHODS #############################################
 ##############################################################################
@@ -77,10 +88,35 @@ DEATH_PINS = [
     {'lat':37.7707, 'lon':-122.4701, 'location': 'San Francisco, Washington'}
   ]
 
+C_DEATH_PINS = [
+    {'lat':37.77271618103960, 'lon':-122.45494365692139, 'location': 'custom'},
+    {'lat':37.77363207735496, 'lon':-122.46073722839355, 'location': 'custom'},
+    {'lat':37.776939386254625, 'lon':-122.44964361190796, 'location': 'custom'},
+    {'lat':37.773767764733025, 'lon':-122.44773387908936, 'location': 'custom'},    
+    {'lat':37.77337766284987, 'lon':-122.44743347167969, 'location': 'custom'}
+  ]
+ 
+C_MONSTER_PINS = [
+    {'lat':37.77375080382439, 'lon':-122.45942831039429, 'location': 'custom'},
+    {'lat':37.77473453009397, 'lon':-122.4490213394165, 'location': 'custom'},
+    {'lat':37.775752164185256, 'lon':-122.45022296905518, 'location': 'custom'},    
+    {'lat':37.77554863848759, 'lon':-122.45803356170654, 'location': 'custom'},  
+    {'lat':37.77509070361927, 'lon':-122.45513677597046, 'location': 'custom'}, 
+    {'lat':40.771831872647006, 'lon':-73.97254586219788, 'location': 'custom'}, 
+    {'lat':37.3204, 'lon':-113.0747, 'location': 'custom'}
+  ]
+
+C_BATTLE_PINS = [
+    {'lat':37.772733142185615, 'lon':-122.4582052230835, 'location': 'custom'},
+    {'lat':37.7709522006134, 'lon':-122.45357036590576, 'location': 'custom'},
+    {'lat':37.775582559476135, 'lon':-122.4526047706604, 'location': 'custom'}
+  ]
+
                                             
 ##############################################################################
 ##############################################################################
-application = webapp.WSGIApplication([(r'/.*', MainHandler)],
+application = webapp.WSGIApplication([(r'/page/(.*)', PageHandler),
+                                      (r'/.*', MainHandler)],
                                        debug=True)
 
 def main():
